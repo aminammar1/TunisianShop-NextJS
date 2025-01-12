@@ -123,3 +123,28 @@ export async function signin(req, res) {
       .json({ message: error.message || 'Internal Server Error' })
   }
 }
+
+// logout controller
+
+export async function signout(req, res) {
+  try {
+    const userid = req.userId // from middleware
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+    }
+    res.clearCookie('accessToken', cookiesOption)
+    res.clearCookie('refreshToken', cookiesOption)
+
+    const deleteRrefreshToken = await UserModel.findByIdAndUpdate(userid, {
+      refreshToken: '',
+    })
+    return res.status(200).json({ message: 'signout successfully' })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}
