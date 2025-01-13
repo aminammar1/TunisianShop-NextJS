@@ -148,3 +148,103 @@ export async function signout(req, res) {
       .json({ message: error.message || 'Internal Server Error' })
   }
 }
+
+// forgot password controller
+
+export async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body
+    const user = await UserModel.findOne({ email })
+
+    if (!user) {
+      return res.status(400).json({ message: 'Email is not registered' })
+    }
+    const otp = generatedOtp()
+    const expireTime = new Date().getTime() + 10 * 60 * 1000 // 10 minutes
+
+    const updateUser = await UserModel.findByIdAndUpdate(user._id, {
+      forgot_password_otp: otp,
+      forgot_password_expiry: new Date(expireTime).toISOString(),
+    })
+
+    await sendEmail({
+      sendTo: email,
+      subject: 'Forgot Password from Hnouti.Tn',
+      html: forgotPasswordTemplate({
+        name: user.name,
+        otp,
+      }),
+    })
+    return res.status(200).json({ message: 'Email sent successfully' })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}
+
+// verify forget password otp controller
+
+export async function verifyOtp(req, res) {
+  try {
+    const { email, otp } = req.body
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: 'All fields are required' })
+    }
+
+    const user = await UserModel.findOne({ email })
+
+    if (!user) {
+      return res.status(400).json({ message: 'Email is not registered' })
+    }
+    const currentTime = new Date().toISOString()
+
+    if (user.forgot_password_expiry < currentTime) {
+      return res.status(400).json({ message: 'OTP is expired' })
+    }
+
+    if (otp !== user.forgot_password_otp) {
+      return res.status(400).json({ message: 'Invalid OTP' })
+    }
+    const updateUser = await UserModel.findByIdAndUpdate(user._id, {
+      forgot_password_otp: '',
+      forgot_password_expiry: '',
+    })
+    return res.status(200).json({ message: 'OTP verified successfully' })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}
+
+// reset password controller
+
+export async function resetPassword(req, res) {
+  try {
+    const { email, newPassword, confirmePassword } = req.body
+
+    if (!email || !newPassword || !confirmePassword) {
+      return res.status(400).json({ message: 'All fields are required' })
+    }
+    const user = await UserModel.findOne({ email })
+    
+    if (!user) {
+      return res.status(400).json({ message: 'Email is not registered' })
+    }
+    if (newPassword !== confirmePassword) {
+      return res.status(400).json({ message: 'Password not match' })
+    }
+    const hashedPassword = bcryptjs.hashSync(newPassword, 10)
+
+    const updateUser = await UserModel.findByIdAndUpdate(user._id, {
+      password: hashedPassword,
+    })
+    return res.status(200).json({ message: 'Password reset successfully' })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}
