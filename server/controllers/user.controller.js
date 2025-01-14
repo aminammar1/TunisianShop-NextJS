@@ -229,7 +229,7 @@ export async function resetPassword(req, res) {
       return res.status(400).json({ message: 'All fields are required' })
     }
     const user = await UserModel.findOne({ email })
-    
+
     if (!user) {
       return res.status(400).json({ message: 'Email is not registered' })
     }
@@ -242,6 +242,44 @@ export async function resetPassword(req, res) {
       password: hashedPassword,
     })
     return res.status(200).json({ message: 'Password reset successfully' })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}
+
+// refresh token controller
+
+export async function refreshToken(req, res) {
+  try {
+    const refreshToken =
+      req.cookies.refreshToken || req?.headers?.authorization?.split(' ')[1]
+
+    if (!refreshToken) {
+      return res.status(400).json({ message: 'No token provided' })
+    }
+
+    const verifyToken = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN_SECRET
+    )
+
+    if (!verifyToken) {
+      return res.status(400).json({ message: 'Invalid token' })
+    }
+    const usrId = verifyToken?._id
+    const newAccessToken = await generateAccessToken(usrId)
+
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+    }
+
+    res.cookie('accessToken', newAccessToken, cookiesOption)
+
+    return res.status(200).json({ message: 'Token refreshed successfully' })
   } catch (error) {
     return res
       .status(500)

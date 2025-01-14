@@ -7,6 +7,7 @@ import {
   forgotPassword,
   verifyOtp,
   resetPassword,
+  refreshToken,
 } from '../controllers/user.controller.js'
 import auth from '../middleware/auth.js'
 
@@ -18,6 +19,7 @@ router.post('/signin', signin)
 router.get('/signout', auth, signout)
 router.post('/forget-password', forgotPassword)
 router.post('/verify-otp', verifyOtp)
-router.post('/reset-password', resetPassword)
+router.put('/reset-password', resetPassword)
+router.post('/refresh-token', refreshToken)
 
 export default router
