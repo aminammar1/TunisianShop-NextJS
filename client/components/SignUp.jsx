@@ -3,6 +3,10 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import Axios from '@/utils/Axios'
+import AxiosToastError from '@/utils/AxiosToastError'
+import GlobalApi from '@/app/api/GlobalApi'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
 
 export default function SignUp() {
@@ -24,14 +28,44 @@ export default function SignUp() {
     }))
   }
 
-  const valideValue = Object.values(data).every((item) => item)
+  const valideValue = Object.values(data).every((value) => value)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (data.password !== data.confirmPassword) {
+      toast.error('Passwords do not match')
+      return
+    }
+    try {
+      const response = await Axios({
+        ...GlobalApi.signup,
+        data: data,
+      })
+      if (response.data.error) {
+        toast.error(response.data.message)
+      }
+      if (response.data.success) {
+        toast.success(response.data.message)
+        setData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        })
+        router.push('/login')
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    }
+  }
 
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded-lg shadow-lg p-8">
         <p className="text-center text-gray-600 mb-6">Welcome to Hantoui.TN</p>
 
-        <form className="grid gap-6">
+        <form className="grid gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2">
             <label htmlFor="name" className="text-sm font-medium text-gray-700">
               Name
@@ -117,11 +151,9 @@ export default function SignUp() {
 
           <button
             disabled={!valideValue}
-            className={`w-full py-3 rounded-lg font-semibold ${
-              valideValue
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-red-300 text-white cursor-not-allowed'
-            } transition-colors duration-200`}
+            className={` ${
+              valideValue ? 'bg-red-700 hover:bg-red-900' : 'bg-red-300'
+            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
           >
             Register
           </button>
