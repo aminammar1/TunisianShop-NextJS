@@ -37,25 +37,23 @@ export default function SignUp() {
       toast.error('Passwords do not match')
       return
     }
+
     try {
       const response = await Axios({
         ...GlobalApi.signup,
         data: data,
       })
-      if (response.data.error) {
-        toast.error(response.data.message)
-      }
-      if (response.data.success) {
-        toast.success(response.data.message)
-        setData({
-          name: '',
-          email: '',
-          password: '',
-          confirmPassword: '',
-        })
-        router.push('/login')
-      }
+      console.log('response:', response)
+      toast.success(response.data.message, { position: 'top-center' })
+      setData({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      })
+      router.push('/login')
     } catch (error) {
+      console.error('Error during registration:', error)
       AxiosToastError(error)
     }
   }
