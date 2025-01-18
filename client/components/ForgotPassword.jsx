@@ -2,22 +2,45 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import GlobalApi from '@/app/api/GlobalApi'
+import toast from 'react-hot-toast'
+import Axios from '@/utils/Axios'
+import AxiosToastError from '@/utils/AxiosToastError'
 import { useRouter } from 'next/navigation'
-import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
+import { ClipLoader } from 'react-spinners'
 
 export default function ForgotPassword() {
   const router = useRouter()
   const [data, setData] = useState({ email: '' })
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setData({ ...data, [e.target.name]: e.target.value })
   }
 
-  const valideValue = Object.values(data).every((item) => item)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+
+      const response = await Axios({
+        ...GlobalApi.forgotPassword,
+        data: data,
+      })
+
+      toast.success(response.data.message)
+
+      router.push(
+        `/verify-otp?state=${encodeURIComponent(JSON.stringify(data))}`
+      )
+
+      setData({ email: '' })
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <section className="w-full container mx-auto px-2">
@@ -27,7 +50,7 @@ export default function ForgotPassword() {
           Enter your email to receive a password reset OTP.
         </p>
 
-        <form className="grid gap-6">
+        <form className="grid gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2">
             <label
               htmlFor="email"
@@ -46,15 +69,8 @@ export default function ForgotPassword() {
             />
           </div>
 
-          <button
-            disabled={!valideValue}
-            className={`w-full py-3 rounded-lg font-semibold ${
-              valideValue
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-red-300 text-white cursor-not-allowed'
-            } transition-colors duration-200`}
-          >
-            Send OTP
+          <button className="w-full py-3 rounded-lg font-semibold  bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 flex justify-center items-center">
+            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Send OTP'}
           </button>
         </form>
 

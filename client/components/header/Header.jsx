@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Search from '../search/Search'
+import Image from 'next/image'
 //import UserMenu from "../user-menu/UserMenu";
 //import useMobile from "../hooks/useMobile";
 //import { DisplayPrice } from "../utils/DisplayPrice";
@@ -33,15 +34,15 @@ export default function Header() {
         {/*Logo */}
         <div className="h-full">
           <Link href="/" className="h-full flex justify-center items-center">
-            <img
-              src="assets/images/logo.png"
+            <Image
+              src="/assets/images/logo.png"
               width={170}
               height={60}
               alt="logo"
               className="hidden lg:block"
             />
-            <img
-              src="assets/images/logo.png"
+            <Image
+              src="/assets/images/logo.png"
               width={120}
               height={60}
               alt="logo"

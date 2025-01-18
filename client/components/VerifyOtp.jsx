@@ -3,11 +3,12 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ClipLoader } from 'react-spinners'
 
 export default function VerifyOtp() {
   const router = useRouter()
   const [data, setData] = useState(['', '', '', '', '', ''])
-  const validateValue = data.every((value) => value)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (index, value) => {
     const newData = [...data]
@@ -43,15 +44,8 @@ export default function VerifyOtp() {
             </div>
           </div>
 
-          <button
-            disabled={!validateValue}
-            className={`w-full py-3 rounded-lg font-semibold ${
-              validateValue
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-red-300 text-white cursor-not-allowed'
-            } transition-colors duration-200`}
-          >
-            Verify OTP
+          <button className="w-full py-3 rounded-lg font-semibold  bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 flex justify-center items-center">
+            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Verify OTP'}
           </button>
         </form>
 

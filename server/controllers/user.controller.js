@@ -286,3 +286,24 @@ export async function refreshToken(req, res) {
       .json({ message: error.message || 'Internal Server Error' })
   }
 }
+
+// get user controller
+
+export async function userDetails(req, res) {
+  try {
+    const userId = req.userId // from middleware
+    console.log(userId)
+
+    const user = await UserModel.findById(userId).select(
+      '-password -refresh_token'
+    )
+    if (!user) {
+      return res.status(400).json({ message: 'User not found' })
+    }
+    return res.status(200).json({ user })
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: error.message || 'Internal Server Error' })
+  }
+}

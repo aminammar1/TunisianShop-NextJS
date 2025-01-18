@@ -56,7 +56,7 @@ const refreshAccessToken = async (refreshToken) => {
         Authorization: `Bearer ${refreshToken}`,
       },
     })
-    const { accessToken } = response.data.accessToken
+    const accessToken = response.data.accessToken
     localStorage.setItem('accessToken', accessToken)
     return accessToken
   } catch (error) {

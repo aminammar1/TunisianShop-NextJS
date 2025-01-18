@@ -8,6 +8,7 @@ import Axios from '@/utils/Axios'
 import AxiosToastError from '@/utils/AxiosToastError'
 import GlobalApi from '@/app/api/GlobalApi'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
+import { ClipLoader } from 'react-spinners'
 
 export default function SignUp() {
   const router = useRouter()
@@ -19,16 +20,11 @@ export default function SignUp() {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setData({ ...data, [e.target.name]: e.target.value })
   }
-
-  const valideValue = Object.values(data).every((value) => value)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -39,11 +35,12 @@ export default function SignUp() {
     }
 
     try {
+      setLoading(true)
       const response = await Axios({
         ...GlobalApi.signup,
         data: data,
       })
-      console.log('response:', response)
+
       toast.success(response.data.message, { position: 'top-center' })
       setData({
         name: '',
@@ -53,15 +50,18 @@ export default function SignUp() {
       })
       router.push('/login')
     } catch (error) {
-      console.error('Error during registration:', error)
       AxiosToastError(error)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded-lg shadow-lg p-8">
-        <p className="text-center text-gray-600 mb-6">Welcome to Hantoui.TN</p>
+        <p className="text-center text-black-600 font-bold mb-6">
+          Welcome to Hantoui.TN
+        </p>
 
         <form className="grid gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2">
@@ -76,7 +76,6 @@ export default function SignUp() {
               onChange={handleChange}
               placeholder="Enter your name"
               className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-              autoFocus
             />
           </div>
           <div className="grid gap-2">
@@ -147,13 +146,8 @@ export default function SignUp() {
             </div>
           </div>
 
-          <button
-            disabled={!valideValue}
-            className={` ${
-              valideValue ? 'bg-red-700 hover:bg-red-900' : 'bg-red-300'
-            }    text-white py-2 rounded font-semibold my-3 tracking-wide`}
-          >
-            Register
+          <button className="w-full py-3 rounded-lg font-semibold  bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 flex justify-center items-center">
+            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Register'}
           </button>
         </form>
 

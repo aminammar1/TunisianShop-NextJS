@@ -3,31 +3,65 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import GlobalApi from '@/app/api/GlobalApi'
+import Axios from '@/utils/Axios'
+import fetchUserDetails from '@/utils/UserDetails'
+import AxiosToastError from '@/utils/AxiosToastError'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
 import { FcGoogle } from 'react-icons/fc'
+import { ClipLoader } from 'react-spinners'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/store/userSlice'
+import toast from 'react-hot-toast'
 
 export default function Login() {
   const router = useRouter()
+  const dispatch = useDispatch()
   const [data, setData] = useState({
     email: '',
     password: '',
   })
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setData({ ...data, [e.target.name]: e.target.value })
   }
 
-  const valideValue = Object.values(data).every((item) => item)
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setLoading(true)
+
+      const response = await Axios({
+        ...GlobalApi.signin,
+        data: data,
+      })
+
+      toast.success(response.data.message, { position: 'top-center' })
+
+      setData({
+        email: '',
+        password: '',
+      })
+      localStorage.setItem('accessToken', response.data.accessToken)
+      localStorage.setItem('refreshToken', response.data.refreshToken)
+
+      const user = await fetchUserDetails()
+      dispatch(setUser(user.data))
+
+      router.replace('/')
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded-lg shadow-lg p-8">
-        <form className="grid gap-6">
+        <form className="grid gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2">
             <label
               htmlFor="email"
@@ -69,19 +103,15 @@ export default function Login() {
                 {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
               </div>
             </div>
-            <Link href="/forgot-password" className="text-sm text-right hover:text-red-500">
+            <Link
+              href="/forgot-password"
+              className="text-sm text-right hover:text-red-500"
+            >
               Forgot password?
             </Link>
           </div>
-          <button
-            disabled={!valideValue}
-            className={`w-full py-3 rounded-lg font-semibold ${
-              valideValue
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-red-300 text-white cursor-not-allowed'
-            } transition-colors duration-200`}
-          >
-            Login
+          <button className="w-full py-3 rounded-lg font-semibold  bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 flex justify-center items-center">
+            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Login'}
           </button>
         </form>
         <div className="flex items-center my-6">
@@ -95,7 +125,10 @@ export default function Login() {
         </button>
         <p className="text-center mt-6 text-sm text-gray-600">
           Don't have an account?{' '}
-          <Link href="/sign-up" className="text-red-700 hover:text-red-900">
+          <Link
+            href="/sign-up"
+            className="text-red-600 hover:text-red-500 font-semibold"
+          >
             Register
           </Link>
         </p>

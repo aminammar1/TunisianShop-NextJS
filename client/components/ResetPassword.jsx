@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
+import { ClipLoader } from 'react-spinners'
 
 export default function ResetPassword() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function ResetPassword() {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const valideValue = data.newPassword && data.confirmPassword
 
@@ -85,15 +87,12 @@ export default function ResetPassword() {
             </div>
           </div>
 
-          <button
-            disabled={!valideValue}
-            className={`w-full py-3 rounded-lg font-semibold ${
-              valideValue
-                ? 'bg-red-600 hover:bg-red-700 text-white'
-                : 'bg-red-300 text-white cursor-not-allowed'
-            } transition-colors duration-200`}
-          >
-            Change Password
+          <button className="w-full py-3 rounded-lg font-semibold  bg-red-600 hover:bg-red-700 text-white transition-colors duration-200 flex justify-center items-center">
+            {loading ? (
+              <ClipLoader size={24} color={'#fff'} />
+            ) : (
+              'Reset Password'
+            )}
           </button>
         </form>
 
