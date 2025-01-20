@@ -8,9 +8,12 @@ import Axios from '@/utils/Axios'
 import AxiosToastError from '@/utils/AxiosToastError'
 import { useRouter } from 'next/navigation'
 import { ClipLoader } from 'react-spinners'
+import { useDispatch } from 'react-redux'
+import { setUser } from '@/store/userSlice'
 
 export default function ForgotPassword() {
   const router = useRouter()
+  const dispatch = useDispatch()
   const [data, setData] = useState({ email: '' })
   const [loading, setLoading] = useState(false)
 
@@ -28,13 +31,19 @@ export default function ForgotPassword() {
         data: data,
       })
 
-      toast.success(response.data.message)
+      if (response.data.error) {
+        return toast.error(response.data.message)
+      }
 
-      router.push(
-        `/verify-otp?state=${encodeURIComponent(JSON.stringify(data))}`
-      )
+      if (response.data.success) {
+        toast.success(response.data.message)
 
-      setData({ email: '' })
+        dispatch(setUser({ email: data.email }))
+
+        router.push('/verify-otp')
+
+        setData({ email: '' })
+      }
     } catch (error) {
       AxiosToastError(error)
     } finally {

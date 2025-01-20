@@ -6,7 +6,7 @@ const Axios = axios.create({
   withCredentials: true,
 })
 
-// Add a request interceptor to set the Authorization header
+//  a request interceptor to set the Authorization header
 Axios.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem('accessToken')

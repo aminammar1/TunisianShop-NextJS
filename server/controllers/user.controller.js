@@ -15,13 +15,21 @@ export async function signup(req, res) {
     const { name, email, password } = req.body
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' })
+      return res.status(400).json({
+        message: 'All fields are required',
+        error: true,
+        success: false,
+      })
     }
 
     const user = await UserModel.findOne({ email })
 
     if (user) {
-      return res.status(400).json({ message: 'Email is already registered' })
+      return res.status(400).json({
+        message: 'Email is already registered',
+        error: true,
+        success: false,
+      })
     }
 
     const hashedPassword = bcryptjs.hashSync(password, 10)
@@ -45,11 +53,17 @@ export async function signup(req, res) {
       }),
     })
 
-    return res.status(201).json({ message: 'User registered successfully' })
+    return res.status(201).json({
+      message: 'User registered successfully',
+      error: false,
+      success: true,
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -61,18 +75,28 @@ export async function verifyEmail(req, res) {
     const user = await UserModel.findOne({ _id: code })
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid verification code' })
+      return res.status(400).json({
+        message: 'Invalid verification code',
+        error: true,
+        success: false,
+      })
     }
     const updateUser = await UserModel.updateOne(
       { _id: code },
       { verify_email: true }
     )
 
-    return res.status(200).json({ message: 'Email verified successfully' })
+    return res.status(200).json({
+      message: 'Email verified successfully',
+      error: false,
+      success: true,
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -83,22 +107,34 @@ export async function signin(req, res) {
     const { email, password } = req.body
 
     if (!email || !password) {
-      return res.status(400).json({ message: 'All fields are required' })
+      return res.status(400).json({
+        message: 'All fields are required',
+        error: true,
+        success: false,
+      })
     }
 
     const user = await UserModel.findOne({ email })
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' })
+      return res
+        .status(400)
+        .json({ message: 'Invalid credentials', error: true, success: false })
     }
 
     if (user.status !== 'Active') {
-      return res.status(400).json({ message: 'Your account is not active' })
+      return res.status(400).json({
+        message: 'Your account is not active',
+        error: true,
+        success: false,
+      })
     }
     const validPassword = bcryptjs.compareSync(password, user.password)
 
     if (!validPassword) {
-      return res.status(400).json({ message: 'wrong password !' })
+      return res
+        .status(400)
+        .json({ message: 'wrong password !', error: true, success: false })
     }
     const accessToken = await generateAccessToken(user._id)
     const refreshToken = await generateRefreshToken(user._id)
@@ -116,11 +152,15 @@ export async function signin(req, res) {
     res.cookie('accessToken', accessToken, cookiesOption)
     res.cookie('refreshToken', refreshToken, cookiesOption)
 
-    return res.status(200).json({ message: 'Login successfully' })
-  } catch (error) {
     return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+      .status(200)
+      .json({ message: 'Login successfully', error: false, success: true })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -141,11 +181,15 @@ export async function signout(req, res) {
     const deleteRrefreshToken = await UserModel.findByIdAndUpdate(userid, {
       refreshToken: '',
     })
-    return res.status(200).json({ message: 'signout successfully' })
-  } catch (error) {
     return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+      .status(200)
+      .json({ message: 'signout successfully', error: false, success: true })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -157,7 +201,11 @@ export async function forgotPassword(req, res) {
     const user = await UserModel.findOne({ email })
 
     if (!user) {
-      return res.status(400).json({ message: 'Email is not registered' })
+      return res.status(400).json({
+        message: 'Email is not registered',
+        error: true,
+        success: false,
+      })
     }
     const otp = generatedOtp()
     const expireTime = new Date().getTime() + 10 * 60 * 1000 // 10 minutes
@@ -175,11 +223,15 @@ export async function forgotPassword(req, res) {
         otp,
       }),
     })
-    return res.status(200).json({ message: 'Email sent successfully' })
-  } catch (error) {
     return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+      .status(200)
+      .json({ message: 'Email sent successfully', error: false, success: true })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -190,18 +242,28 @@ export async function verifyOtp(req, res) {
     const { email, otp } = req.body
 
     if (!email || !otp) {
-      return res.status(400).json({ message: 'All fields are required' })
+      return res.status(400).json({
+        message: 'All fields are required',
+        error: true,
+        success: false,
+      })
     }
 
     const user = await UserModel.findOne({ email })
 
     if (!user) {
-      return res.status(400).json({ message: 'Email is not registered' })
+      return res.status(400).json({
+        message: 'Email is not registered',
+        error: true,
+        success: false,
+      })
     }
     const currentTime = new Date().toISOString()
 
     if (user.forgot_password_expiry < currentTime) {
-      return res.status(400).json({ message: 'OTP is expired' })
+      return res
+        .status(400)
+        .json({ message: 'OTP is expired', error: true, success: false })
     }
 
     if (otp !== user.forgot_password_otp) {
@@ -211,11 +273,17 @@ export async function verifyOtp(req, res) {
       forgot_password_otp: '',
       forgot_password_expiry: '',
     })
-    return res.status(200).json({ message: 'OTP verified successfully' })
+    return res.status(200).json({
+      message: 'OTP verified successfully',
+      error: false,
+      success: true,
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -223,29 +291,45 @@ export async function verifyOtp(req, res) {
 
 export async function resetPassword(req, res) {
   try {
-    const { email, newPassword, confirmePassword } = req.body
+    const { email, newPassword, confirmPassword } = req.body
 
-    if (!email || !newPassword || !confirmePassword) {
-      return res.status(400).json({ message: 'All fields are required' })
+    if (!email || !newPassword || !confirmPassword) {
+      return res.status(400).json({
+        message: 'All fields are required',
+        error: true,
+        success: false,
+      })
     }
     const user = await UserModel.findOne({ email })
 
     if (!user) {
-      return res.status(400).json({ message: 'Email is not registered' })
+      return res.status(400).json({
+        message: 'Email is not registered',
+        error: true,
+        success: false,
+      })
     }
-    if (newPassword !== confirmePassword) {
-      return res.status(400).json({ message: 'Password not match' })
+    if (newPassword !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: 'Password not match', error: true, success: false })
     }
     const hashedPassword = bcryptjs.hashSync(newPassword, 10)
 
     const updateUser = await UserModel.findByIdAndUpdate(user._id, {
       password: hashedPassword,
     })
-    return res.status(200).json({ message: 'Password reset successfully' })
+    return res.status(200).json({
+      message: 'Password reset successfully',
+      error: false,
+      success: true,
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -257,7 +341,9 @@ export async function refreshToken(req, res) {
       req.cookies.refreshToken || req?.headers?.authorization?.split(' ')[1]
 
     if (!refreshToken) {
-      return res.status(400).json({ message: 'No token provided' })
+      return res
+        .status(400)
+        .json({ message: 'No token provided', error: true, success: false })
     }
 
     const verifyToken = jwt.verify(
@@ -266,7 +352,9 @@ export async function refreshToken(req, res) {
     )
 
     if (!verifyToken) {
-      return res.status(400).json({ message: 'Invalid token' })
+      return res
+        .status(400)
+        .json({ message: 'Invalid token', error: true, success: false })
     }
     const usrId = verifyToken?._id
     const newAccessToken = await generateAccessToken(usrId)
@@ -279,11 +367,17 @@ export async function refreshToken(req, res) {
 
     res.cookie('accessToken', newAccessToken, cookiesOption)
 
-    return res.status(200).json({ message: 'Token refreshed successfully' })
+    return res.status(200).json({
+      message: 'Token refreshed successfully',
+      error: false,
+      success: true,
+    })
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }
 
@@ -298,12 +392,18 @@ export async function userDetails(req, res) {
       '-password -refresh_token'
     )
     if (!user) {
-      return res.status(400).json({ message: 'User not found' })
+      return res
+        .status(400)
+        .json({ message: 'User not found', error: true, success: false })
     }
     return res.status(200).json({ user })
   } catch (error) {
     return res
       .status(500)
-      .json({ message: error.message || 'Internal Server Error' })
+      .json({
+        message: error.message || 'Internal Server Error',
+        error: true,
+        success: false,
+      })
   }
 }

@@ -40,15 +40,19 @@ export default function SignUp() {
         ...GlobalApi.signup,
         data: data,
       })
-
-      toast.success(response.data.message, { position: 'top-center' })
-      setData({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-      })
-      router.push('/login')
+      if (response.data.error) {
+        return toast.error(response.data.message)
+      }
+      if (response.data.success) {
+        toast.success(response.data.message, { position: 'top-center' })
+        setData({
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+        })
+        router.push('/login')
+      }
     } catch (error) {
       AxiosToastError(error)
     } finally {

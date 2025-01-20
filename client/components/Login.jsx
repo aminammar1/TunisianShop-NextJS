@@ -38,19 +38,25 @@ export default function Login() {
         data: data,
       })
 
-      toast.success(response.data.message, { position: 'top-center' })
+      if (response.data.error) {
+        return toast.error(response.data.message)
+      }
 
-      setData({
-        email: '',
-        password: '',
-      })
-      localStorage.setItem('accessToken', response.data.accessToken)
-      localStorage.setItem('refreshToken', response.data.refreshToken)
+      if (response.data.success) {
+        toast.success(response.data.message, { position: 'top-center' })
 
-      const user = await fetchUserDetails()
-      dispatch(setUser(user.data))
+        setData({
+          email: '',
+          password: '',
+        })
+        localStorage.setItem('accessToken', response.data.accessToken)
+        localStorage.setItem('refreshToken', response.data.refreshToken)
 
-      router.replace('/')
+        const user = await fetchUserDetails()
+        dispatch(setUser(user.data))
+
+        router.replace('/')
+      }
     } catch (error) {
       AxiosToastError(error)
     } finally {

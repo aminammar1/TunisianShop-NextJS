@@ -3,6 +3,11 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useSelector } from 'react-redux'
+import GlobalApi from '@/app/api/GlobalApi'
+import toast from 'react-hot-toast'
+import Axios from '@/utils/Axios'
+import AxiosToastError from '@/utils/AxiosToastError'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { ClipLoader } from 'react-spinners'
 
@@ -15,15 +20,47 @@ export default function ResetPassword() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
-
-  const valideValue = data.newPassword && data.confirmPassword
+  const email = useSelector((state) => state.user.email)
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
+    setData({ ...data, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (data.newPassword !== data.confirmPassword) {
+      toast.error('Passwords do not match')
+      return
+    }
+
+    try {
+      setLoading(true)
+      const response = await Axios({
+        ...GlobalApi.resetPassword,
+        data: {
+          email,
+          newPassword: data.newPassword,
+          confirmPassword: data.confirmPassword,
+        },
+      })
+
+      if (response.data.error) {
+        return toast.error(response.data.message)
+      }
+      if (response.data.success) {
+        toast.success(response.data.message)
+        router.push('/login')
+        setData({
+          newPassword: '',
+          confirmPassword: '',
+        })
+      }
+    } catch (error) {
+      AxiosToastError(error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -34,7 +71,7 @@ export default function ResetPassword() {
           Enter your new password below.
         </p>
 
-        <form className="grid gap-6">
+        <form className="grid gap-6" onSubmit={handleSubmit}>
           <div className="grid gap-2">
             <label
               htmlFor="newPassword"
