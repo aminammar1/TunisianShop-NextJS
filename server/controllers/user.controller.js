@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 import verifyEmailTemplate from '../utils/verifyEmailTemplate.js'
 import generateAccessToken from '../utils/generateAccessToken.js'
 import generateRefreshToken from '../utils/generateRefreshToken.js'
-//import uploadImageClodinary from "../utils/uploadImage.js";
+import uploadImageClodinary from '../utils/uploadImage.js'
 import generatedOtp from '../utils/generateOtp.js'
 import forgotPasswordTemplate from '../utils/forgotPasswordTemplate.js'
 
@@ -119,7 +119,7 @@ export async function signin(req, res) {
     if (!user) {
       return res
         .status(400)
-        .json({ message: 'Invalid credentials', error: true, success: false })
+        .json({ message: 'User not register', error: true, success: false })
     }
 
     if (user.status !== 'Active') {
@@ -396,14 +396,80 @@ export async function userDetails(req, res) {
         .status(400)
         .json({ message: 'User not found', error: true, success: false })
     }
-    return res.status(200).json({ user })
-  } catch (error) {
     return res
-      .status(500)
-      .json({
-        message: error.message || 'Internal Server Error',
-        error: true,
-        success: false,
-      })
+      .status(200)
+      .json({ message: 'User found', data: user, error: false })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
+  }
+}
+
+// upload user avatar
+
+export async function uploadAvatar(req, res) {
+  try {
+    const userId = req.userId // from middleware
+    const image = req.file // from middleware
+    const uploadImage = await uploadImageClodinary(image)
+
+    const updateUser = await UserModel.findByIdAndUpdate(userId, {
+      avatar: uploadImage.url,
+    })
+    return res.status(200).json({
+      message: 'Avatar uploaded successfully',
+      success: true,
+      error: false,
+      data: {
+        _id: userId,
+        avatar: uploadImage.url,
+      },
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
+  }
+}
+
+//  update user controller
+
+export async function updateProfilUser(req, res) {
+  try {
+    const userId = req.userId // from middleware
+    const { name, email, mobile, password } = req.body
+
+    let hashedPassword = ''
+
+    if (password) {
+      hashedPassword = bcryptjs.hashSync(password, 10)
+    }
+
+    const updateUser = await UserModel.updateOne(
+      { _id: userId },
+      {
+        ...(name && { name: name }),
+        ...(email && { email: email }),
+        ...(mobile && { mobile: mobile }),
+        ...(password && { password: hashedPassword }),
+      }
+    )
+
+    return res.status(200).json({
+      message: 'User updated successfully',
+      success: true,
+      error: false,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message || 'Internal Server Error',
+      error: true,
+      success: false,
+    })
   }
 }

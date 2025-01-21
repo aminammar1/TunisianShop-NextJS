@@ -55,7 +55,7 @@ export default function Login() {
         const user = await fetchUserDetails()
         dispatch(setUser(user.data))
 
-        router.replace('/')
+        router.push('/')
       }
     } catch (error) {
       AxiosToastError(error)

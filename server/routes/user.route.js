@@ -9,8 +9,11 @@ import {
   resetPassword,
   refreshToken,
   userDetails,
+  uploadAvatar,
+  updateProfilUser,
 } from '../controllers/user.controller.js'
 import auth from '../middleware/auth.js'
+import upload from '../middleware/multer.js'
 
 const router = express.Router()
 
@@ -23,5 +26,7 @@ router.post('/verify-otp', verifyOtp)
 router.put('/reset-password', resetPassword)
 router.post('/refresh-token', refreshToken)
 router.get('/user-details', auth, userDetails)
+router.put('/upload-avatar', auth, upload.single('avatar'), uploadAvatar)
+router.put('/update-user', auth, updateProfilUser)
 
 export default router

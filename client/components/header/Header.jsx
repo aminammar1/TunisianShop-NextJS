@@ -5,11 +5,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import Search from '../search/Search'
 import Image from 'next/image'
-//import UserMenu from "../user-menu/UserMenu";
+import UserMenu from '../user-menu/UserMenu'
 //import useMobile from "../hooks/useMobile";
 //import { DisplayPrice } from "../utils/DisplayPrice";
 import DisplayCartItem from '../display-card/DisplayCartItem'
-//import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux'
 //import {useGlobalContext} from "../provider/GlobalProvider";
 import { FaRegCircleUser } from 'react-icons/fa6'
 import { BsCart3 } from 'react-icons/bs'
@@ -17,12 +17,15 @@ import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 
 export default function Header() {
   //const [isMobile] = useMobile();
-  //const location = useLocation();
   //const isSearchPage = location.pathname === "/search";
-  //const navigate = useNavigate();
-  //const [openUserMenu, SetopenUserMenu] = useState(false);
+  const [openUserMenu, SetopenUserMenu] = useState(false)
   const [openCart, SetopenCart] = useState(false)
   const router = useRouter()
+  const user = useSelector((state) => state?.user)
+
+  const handleCloseUserMenu = () => {
+    SetopenUserMenu(false)
+  }
 
   const redirectToLoginPage = () => {
     router.push('/login')
@@ -67,11 +70,32 @@ export default function Header() {
 
           {/** desktop version */}
           <div className="hidden lg:flex items-center gap-10">
-            {/** <UserMenu /> **/}
-
-            <button onClick={redirectToLoginPage} className="text-lg px-2">
-              Login
-            </button>
+            {user?._id ? (
+              <div className="relative">
+                <div
+                  onClick={() => SetopenUserMenu((preve) => !preve)}
+                  className="flex select-none items-center gap-1 cursor-pointer"
+                >
+                  <p> Account </p>
+                  {openUserMenu ? (
+                    <GoTriangleUp size={20} />
+                  ) : (
+                    <GoTriangleDown size={20} />
+                  )}
+                </div>
+                {openUserMenu && (
+                  <div className="absolute top-12 right-0">
+                    <div className="bg-white rounded p-4 min-w-52 lg:shadow-lg">
+                      <UserMenu close={handleCloseUserMenu} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button onClick={redirectToLoginPage} className="text-lg px-2">
+                Login
+              </button>
+            )}
 
             <button
               onClick={() => SetopenCart(true)}

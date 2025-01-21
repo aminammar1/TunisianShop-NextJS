@@ -1,9 +1,11 @@
 'use client'
+
 import '../styles/globals.css'
 import Header from '@/components/header/Header'
 import { Toaster } from 'react-hot-toast'
-import { store } from '@/store/store'
+import { store, persistor } from '@/store/store'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 export default function RootLayout({ children }) {
   return (
@@ -14,9 +16,11 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <Provider store={store}>
-          <Header />
-          {children}
-          <Toaster />
+          <PersistGate loading={null} persistor={persistor}>
+            <Header />
+            {children}
+            <Toaster />
+          </PersistGate>
         </Provider>
       </body>
     </html>
