@@ -37,6 +37,14 @@ const GlobalApi = {
     url: '/api/user/user-details',
     method: 'get',
   },
+  uploadAvatar: {
+    url: '/api/user/upload-avatar',
+    method: 'put',
+  },
+  updateProfilUser: {
+    url: '/api/user/update-user',
+    method: 'put',
+  },
 }
 
 export default GlobalApi
