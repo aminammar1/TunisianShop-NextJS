@@ -11,6 +11,7 @@ import {
   userDetails,
   uploadAvatar,
   updateProfilUser,
+  googleauth,
 } from '../controllers/user.controller.js'
 import auth from '../middleware/auth.js'
 import upload from '../middleware/multer.js'
@@ -20,6 +21,7 @@ const router = express.Router()
 router.post('/signup', signup)
 router.post('/verify-email', verifyEmail)
 router.post('/signin', signin)
+router.post('/google-auth', googleauth)
 router.get('/signout', auth, signout)
 router.post('/forget-password', forgotPassword)
 router.post('/verify-otp', verifyOtp)

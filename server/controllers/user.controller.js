@@ -8,6 +8,7 @@ import generateRefreshToken from '../utils/generateRefreshToken.js'
 import uploadImageClodinary from '../utils/uploadImage.js'
 import generatedOtp from '../utils/generateOtp.js'
 import forgotPasswordTemplate from '../utils/forgotPasswordTemplate.js'
+import generatePassword from '../utils/generatePassword.js'
 
 // signup controller
 export async function signup(req, res) {
@@ -470,6 +471,64 @@ export async function updateProfilUser(req, res) {
       message: error.message || 'Internal Server Error',
       error: true,
       success: false,
+    })
+  }
+}
+
+export const googleauth = async (req, res) => {
+  try {
+    const user = await UserModel.findOne({ email: req.body.email })
+    if (user) {
+      const accessToken = await generateAccessToken(user._id)
+      const refreshToken = await generateRefreshToken(user._id)
+      const cookiesOption = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+      }
+      res.cookie('accessToken', accessToken, cookiesOption)
+      res.cookie('refreshToken', refreshToken, cookiesOption)
+      return res.status(200).json({
+        message: 'Login with google successfully',
+        error: false,
+        success: true,
+      })
+    } else {
+      const generatepaswword = generatePassword()
+
+      const hashedPassword = bcryptjs.hashSync(generatepaswword, 10)
+      
+      const newUser = new UserModel({
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword,
+        avatar: req.body.photo,
+      })
+
+      await newUser.save()
+      
+      const accessToken = await generateAccessToken(user._id)
+      
+      const refreshToken = await generateRefreshToken(user._id)
+      
+      const cookiesOption = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+      }
+      res.cookie('accessToken', accessToken, cookiesOption)
+      res.cookie('refreshToken', refreshToken, cookiesOption)
+      
+      return res.status(200).json({
+        message: 'Login with google successfully',
+        error: false,
+        success: true,
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      message: 'Error while login with google',
+      error: true,
     })
   }
 }
