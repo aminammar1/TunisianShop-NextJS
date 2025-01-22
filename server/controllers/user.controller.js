@@ -10,7 +10,6 @@ import generatedOtp from '../utils/generateOtp.js'
 import forgotPasswordTemplate from '../utils/forgotPasswordTemplate.js'
 import generatePassword from '../utils/generatePassword.js'
 
-// signup controller
 export async function signup(req, res) {
   try {
     const { name, email, password } = req.body
@@ -68,7 +67,6 @@ export async function signup(req, res) {
   }
 }
 
-// verify email controller
 export async function verifyEmail(req, res) {
   try {
     const { code } = req.body
@@ -100,8 +98,6 @@ export async function verifyEmail(req, res) {
     })
   }
 }
-
-// login controller
 
 export async function signin(req, res) {
   try {
@@ -165,11 +161,9 @@ export async function signin(req, res) {
   }
 }
 
-// logout controller
-
 export async function signout(req, res) {
   try {
-    const userid = req.userId // from middleware
+    const userid = req.userId
 
     const cookiesOption = {
       httpOnly: true,
@@ -194,8 +188,6 @@ export async function signout(req, res) {
   }
 }
 
-// forgot password controller
-
 export async function forgotPassword(req, res) {
   try {
     const { email } = req.body
@@ -209,7 +201,7 @@ export async function forgotPassword(req, res) {
       })
     }
     const otp = generatedOtp()
-    const expireTime = new Date().getTime() + 10 * 60 * 1000 // 10 minutes
+    const expireTime = new Date().getTime() + 10 * 60 * 1000
 
     const updateUser = await UserModel.findByIdAndUpdate(user._id, {
       forgot_password_otp: otp,
@@ -235,8 +227,6 @@ export async function forgotPassword(req, res) {
     })
   }
 }
-
-// verify forget password otp controller
 
 export async function verifyOtp(req, res) {
   try {
@@ -288,8 +278,6 @@ export async function verifyOtp(req, res) {
   }
 }
 
-// reset password controller
-
 export async function resetPassword(req, res) {
   try {
     const { email, newPassword, confirmPassword } = req.body
@@ -333,8 +321,6 @@ export async function resetPassword(req, res) {
     })
   }
 }
-
-// refresh token controller
 
 export async function refreshToken(req, res) {
   try {
@@ -382,11 +368,9 @@ export async function refreshToken(req, res) {
   }
 }
 
-// get user controller
-
 export async function userDetails(req, res) {
   try {
-    const userId = req.userId // from middleware
+    const userId = req.userId
     console.log(userId)
 
     const user = await UserModel.findById(userId).select(
@@ -409,12 +393,10 @@ export async function userDetails(req, res) {
   }
 }
 
-// upload user avatar
-
 export async function uploadAvatar(req, res) {
   try {
-    const userId = req.userId // from middleware
-    const image = req.file // from middleware
+    const userId = req.userId
+    const image = req.file
     const uploadImage = await uploadImageClodinary(image)
 
     const updateUser = await UserModel.findByIdAndUpdate(userId, {
@@ -438,11 +420,9 @@ export async function uploadAvatar(req, res) {
   }
 }
 
-//  update user controller
-
 export async function updateProfilUser(req, res) {
   try {
-    const userId = req.userId // from middleware
+    const userId = req.userId
     const { name, email, mobile, password } = req.body
 
     let hashedPassword = ''
@@ -495,9 +475,8 @@ export const googleauth = async (req, res) => {
       })
     } else {
       const generatepaswword = generatePassword()
-
       const hashedPassword = bcryptjs.hashSync(generatepaswword, 10)
-      
+
       const newUser = new UserModel({
         name: req.body.name,
         email: req.body.email,
@@ -506,11 +485,10 @@ export const googleauth = async (req, res) => {
       })
 
       await newUser.save()
-      
-      const accessToken = await generateAccessToken(user._id)
-      
-      const refreshToken = await generateRefreshToken(user._id)
-      
+
+      const accessToken = await generateAccessToken(newUser._id)
+      const refreshToken = await generateRefreshToken(newUser._id)
+
       const cookiesOption = {
         httpOnly: true,
         secure: true,
@@ -518,7 +496,7 @@ export const googleauth = async (req, res) => {
       }
       res.cookie('accessToken', accessToken, cookiesOption)
       res.cookie('refreshToken', refreshToken, cookiesOption)
-      
+
       return res.status(200).json({
         message: 'Login with google successfully',
         error: false,
@@ -526,9 +504,11 @@ export const googleauth = async (req, res) => {
       })
     }
   } catch (error) {
+    console.error('Error in googleauth:', error)
     return res.status(500).json({
       message: 'Error while login with google',
       error: true,
+      success: false,
     })
   }
 }

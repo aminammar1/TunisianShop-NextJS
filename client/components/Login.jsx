@@ -8,11 +8,11 @@ import Axios from '@/utils/Axios'
 import fetchUserDetails from '@/utils/UserDetails'
 import AxiosToastError from '@/utils/AxiosToastError'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
-import { FcGoogle } from 'react-icons/fc'
 import { ClipLoader } from 'react-spinners'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/userSlice'
 import toast from 'react-hot-toast'
+import GoogleAuth from './GoogleAuth'
 
 export default function Login() {
   const router = useRouter()
@@ -125,10 +125,7 @@ export default function Login() {
           <span className="mx-4 text-gray-500">OR</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
-        <button className="w-full flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors duration-200">
-          <FcGoogle className="text-xl" />
-          Continue with Google
-        </button>
+        <GoogleAuth />
         <p className="text-center mt-6 text-sm text-gray-600">
           Don't have an account?{' '}
           <Link

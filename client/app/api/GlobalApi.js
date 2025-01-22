@@ -45,6 +45,10 @@ const GlobalApi = {
     url: '/api/user/update-user',
     method: 'put',
   },
+  googleAuth: {
+    url: '/api/user/google-auth',
+    method: 'post',
+  },
 }
 
 export default GlobalApi
