@@ -3,9 +3,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { HiOutlineExternalLink } from 'react-icons/hi'
-import Divider from '../Divider'
 import { logout } from '@/store/userSlice'
 import Axios from '@/utils/Axios'
 import toast from 'react-hot-toast'
@@ -14,7 +14,7 @@ import GlobalApi from '@/app/api/GlobalApi'
 import isAdmin from '@/utils/AdminVerify'
 
 export default function UserMenu({ close }) {
-  const user = useSelector((state) => state?.user)
+  const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -43,88 +43,92 @@ export default function UserMenu({ close }) {
   }
 
   return (
-    <div>
-      <div className="font-semibold">My Account</div>
-      <div className="text-sm flex items-center gap-2">
-        <span className="max-w-52 text-ellipsis line-clamp-1">
-          {user.name || user.mobile}{' '}
-          <span className="text-medium text-red-600">
-            {user.role === 'ADMIN' ? '(Admin)' : ''}
-          </span>
-        </span>
-        <Link
-          onClick={handleClose}
-          href={'/dashboard/profile'}
-          className="hover:text-primary-200"
-        >
-          <HiOutlineExternalLink size={15} />
-        </Link>
+    <div className="bg-white shadow-sm rounded-lg w-80 p-4 divide-y divide-gray-200">
+      <div className="flex items-center space-x-4 pb-4">
+        <Image
+          src={user.avatar || '/default-avatar.png'}
+          alt="User Avatar"
+          width={48}
+          height={48}
+          className="rounded-full"
+        />
+        <div className="flex-1 truncate">
+          <div className="text-lg font-semibold text-gray-800">
+            {user.name || 'Guest'}
+          </div>
+          <div className="text-sm text-gray-500 truncate">
+            {user.email || 'No email provided'}
+          </div>
+        </div>
       </div>
 
-      <Divider />
-
-      <div className="text-sm grid gap-1">
-        {isAdmin(user.role) && (
+      <div className="py-4">
+        <nav className="space-y-2">
           <Link
+            href="/dashboard/profile"
+            className=" px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700 flex items-center justify-between"
             onClick={handleClose}
-            href={'/dashboard/category'}
-            className="px-2 hover:bg-orange-200 py-1"
           >
-            Category
+            Profile
+            <HiOutlineExternalLink className="w-5 h-5 text-gray-500" />
           </Link>
-        )}
 
-        {isAdmin(user.role) && (
+          {isAdmin(user.role) && (
+            <>
+              <Link
+                href="/dashboard/category"
+                className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                onClick={handleClose}
+              >
+                Manage Categories
+              </Link>
+              <Link
+                href="/dashboard/subcategory"
+                className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                onClick={handleClose}
+              >
+                Manage Subcategories
+              </Link>
+              <Link
+                href="/dashboard/upload-product"
+                className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                onClick={handleClose}
+              >
+                Upload Product
+              </Link>
+              <Link
+                href="/dashboard/product"
+                className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
+                onClick={handleClose}
+              >
+                View Products
+              </Link>
+            </>
+          )}
+
           <Link
+            href="/dashboard/myorders"
+            className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
             onClick={handleClose}
-            href={'/dashboard/subcategory'}
-            className="px-2 hover:bg-orange-200 py-1"
           >
-            Sub Category
+            My Orders
           </Link>
-        )}
-
-        {isAdmin(user.role) && (
           <Link
+            href="/dashboard/address"
+            className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
             onClick={handleClose}
-            href={'/dashboard/upload-product'}
-            className="px-2 hover:bg-orange-200 py-1"
           >
-            Upload Product
+            Saved Addresses
           </Link>
-        )}
+        </nav>
+      </div>
 
-        {isAdmin(user.role) && (
-          <Link
-            onClick={handleClose}
-            href={'/dashboard/product'}
-            className="px-2 hover:bg-orange-200 py-1"
-          >
-            Product
-          </Link>
-        )}
-
-        <Link
-          onClick={handleClose}
-          href={'/dashboard/myorders'}
-          className="px-2 hover:bg-orange-200 py-1"
-        >
-          My Orders
-        </Link>
-
-        <Link
-          onClick={handleClose}
-          href={'/dashboard/address'}
-          className="px-2 hover:bg-orange-200 py-1"
-        >
-          Save Address
-        </Link>
-
+      <div className="pt-4">
         <button
           onClick={handleLogout}
-          className="text-left px-2 hover:bg-orange-200 py-1"
+          className="w-full flex items-center justify-center px-3 py-2 text-white bg-red-500 hover:bg-red-600 rounded-md"
         >
-          Log Out
+          Logout
         </button>
       </div>
     </div>

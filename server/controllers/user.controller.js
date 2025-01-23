@@ -163,23 +163,52 @@ export async function signin(req, res) {
 
 export async function signout(req, res) {
   try {
-    const userid = req.userId
+    const userId = req.userId  // req.userId is coming from the middleware
+    
+    if (!userId) {
+      return res.status(400).json({
+        message: 'Invalid request: User ID is missing',
+        error: true,
+        success: false,
+      })
+    }
 
-    const cookiesOption = {
+    const cookieOptions = {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'None',
     }
-    res.clearCookie('accessToken', cookiesOption)
-    res.clearCookie('refreshToken', cookiesOption)
 
-    const deleteRrefreshToken = await UserModel.findByIdAndUpdate(userid, {
-      refreshToken: '',
+    res.clearCookie('accessToken', cookieOptions)
+    res.clearCookie('refreshToken', cookieOptions)
+
+    const updateResult = await UserModel.findByIdAndUpdate(userId, {
+      refresh_token: '',
     })
-    return res
-      .status(200)
-      .json({ message: 'signout successfully', error: false, success: true })
+
+    if (!updateResult) {
+      return res.status(404).json({
+        message: 'User not found',
+        error: true,
+        success: false,
+      })
+    }
+
+    res.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, proxy-revalidate'
+    )
+    res.set('Pragma', 'no-cache')
+    res.set('Expires', '0')
+    res.set('Surrogate-Control', 'no-store')
+
+    return res.status(200).json({
+      message: 'Signout successful',
+      error: false,
+      success: true,
+    })
   } catch (error) {
+    console.error('Signout Error:', error)
     return res.status(500).json({
       message: error.message || 'Internal Server Error',
       error: true,
