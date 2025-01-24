@@ -16,6 +16,8 @@ const auth = async (req, res, next) => {
     if (!decode) {
       return res.status(401).json({
         message: 'unauthorized access',
+        error: true,
+        success: false,
       })
     }
 
@@ -25,6 +27,8 @@ const auth = async (req, res, next) => {
   } catch (error) {
     return res.status(500).json({
       message: 'You have not signin yet',
+      error: true,
+      success: false,
     })
   }
 }

@@ -79,7 +79,7 @@ export default function Sidebar({ close }) {
               href="/dashboard/profile"
               className="flex items-center p-2 space-x-3 rounded-md"
             >
-              <HiOutlineUser className="w-5 h-5 dark:text-gray-600" />
+              <HiOutlineUser className="w-5 h-5" />
               <span>Profile</span>
             </Link>
           </li>

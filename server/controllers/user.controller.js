@@ -149,9 +149,15 @@ export async function signin(req, res) {
     res.cookie('accessToken', accessToken, cookiesOption)
     res.cookie('refreshToken', refreshToken, cookiesOption)
 
-    return res
-      .status(200)
-      .json({ message: 'Login successfully', error: false, success: true })
+    return res.status(200).json({
+      message: 'Login successfully',
+      error: false,
+      success: true,
+      data: {
+        accessToken,
+        refreshToken,
+      },
+    })
   } catch (error) {
     return res.status(500).json({
       message: error.message || 'Internal Server Error',
@@ -163,8 +169,8 @@ export async function signin(req, res) {
 
 export async function signout(req, res) {
   try {
-    const userId = req.userId  // req.userId is coming from the middleware
-    
+    const userId = req.userId // req.userId is coming from the middleware
+
     if (!userId) {
       return res.status(400).json({
         message: 'Invalid request: User ID is missing',
@@ -185,14 +191,6 @@ export async function signout(req, res) {
     const updateResult = await UserModel.findByIdAndUpdate(userId, {
       refresh_token: '',
     })
-
-    if (!updateResult) {
-      return res.status(404).json({
-        message: 'User not found',
-        error: true,
-        success: false,
-      })
-    }
 
     res.set(
       'Cache-Control',
