@@ -6,11 +6,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { logout } from '@/store/userSlice'
-import Axios from '@/utils/Axios'
+import Axios from '@/lib/Axios'
 import toast from 'react-hot-toast'
-import AxiosToastError from '@/utils/AxiosToastError'
+import AxiosToastError from '@/lib/AxiosToastError'
 import GlobalApi from '@/api/GlobalApi'
-import isAdmin from '@/utils/AdminVerify'
+import isAdmin from '@/lib/AdminVerify'
 import {
   HiOutlineUser,
   HiOutlineFolder,

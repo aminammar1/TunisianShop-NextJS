@@ -1,18 +1,18 @@
 'use client'
 
 import { GoogleAuthProvider, getAuth, signInWithPopup } from 'firebase/auth'
-import { app } from '@/utils/firebase'
+import { app } from '@/lib/firebase'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import GlobalApi from '@/api/GlobalApi'
 import toast from 'react-hot-toast'
-import Axios from '@/utils/Axios'
-import AxiosToastError from '@/utils/AxiosToastError'
+import Axios from '@/lib/Axios'
+import AxiosToastError from '@/lib/AxiosToastError'
 import { useDispatch } from 'react-redux'
 import { setUser } from '@/store/userSlice'
 import { ClipLoader } from 'react-spinners'
 import { FcGoogle } from 'react-icons/fc'
-import fetchUserDetails from '@/utils/UserDetails'
+import fetchUserDetails from '@/lib/UserDetails'
 
 export default function GoogleAuth() {
   const dispatch = useDispatch()

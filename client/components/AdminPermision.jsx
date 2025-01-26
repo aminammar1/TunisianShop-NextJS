@@ -1,6 +1,6 @@
 // components/AdminPermission.jsx
 import { useSelector } from 'react-redux'
-import isAdmin from '@/utils/AdminVerify'
+import isAdmin from '@/lib/AdminVerify'
 
 const AdminPermission = ({ children }) => {
   const user = useSelector((state) => state.user)

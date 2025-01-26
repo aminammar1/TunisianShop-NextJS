@@ -7,11 +7,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { HiOutlineExternalLink } from 'react-icons/hi'
 import { logout } from '@/store/userSlice'
-import Axios from '@/utils/Axios'
+import Axios from '@/lib/Axios'
 import toast from 'react-hot-toast'
-import AxiosToastError from '@/utils/AxiosToastError'
+import AxiosToastError from '@/lib/AxiosToastError'
 import GlobalApi from '@/api/GlobalApi'
-import isAdmin from '@/utils/AdminVerify'
+import isAdmin from '@/lib/AdminVerify'
 
 export default function UserMenu({ close }) {
   const user = useSelector((state) => state.user)

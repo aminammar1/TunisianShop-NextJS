@@ -5,9 +5,9 @@ import { useSelector } from 'react-redux'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import AxiosToastError from '@/utils/AxiosToastError'
+import AxiosToastError from '@/lib/AxiosToastError'
 import { ClipLoader } from 'react-spinners'
-import Axios from '@/utils/Axios'
+import Axios from '@/lib/Axios'
 import GlobalApi from '@/api/GlobalApi'
 
 export default function VerifyOtp() {

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
-import Axios from '@/utils/Axios'
+import Axios from '@/lib/Axios'
 import GlobalApi from '@/api/GlobalApi'
 
 export default function VerifyEmail() {
