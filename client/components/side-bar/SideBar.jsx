@@ -54,7 +54,7 @@ export default function Sidebar({ close }) {
     <div className="h-full p-3 space-y-2 w-60 dark:bg-gray-50 dark:text-gray-800">
       <div className="flex items-center p-2 space-x-4">
         <Image
-          src={user.avatar || '/assets/images/default-avatar.png'}
+          src={user.avatar || '/assets/images/profile.png'}
           alt="User Avatar"
           width={40}
           height={40}
@@ -62,13 +62,8 @@ export default function Sidebar({ close }) {
         />
         <div>
           <h2 className="text-md font-semibold">{user.name || 'Guest'}</h2>
-          <span className="flex items-center space-x-1">
-            <Link
-              href="/dashboard/profile"
-              className="text-xs hover:underline dark:text-gray-600"
-            >
-              View profile
-            </Link>
+          <span className="flex items-center space-x-1 text-md dark:text-gray-600">
+            {user.role || 'User'}
           </span>
         </div>
       </div>
@@ -77,7 +72,8 @@ export default function Sidebar({ close }) {
           <li className="dark:bg-gray-100 dark:text-gray-900">
             <Link
               href="/dashboard/profile"
-              className="flex items-center p-2 space-x-3 rounded-md"
+              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
+              onClick={handleClose}
             >
               <HiOutlineUser className="w-5 h-5" />
               <span>Profile</span>
@@ -88,7 +84,7 @@ export default function Sidebar({ close }) {
               <li>
                 <Link
                   href="/dashboard/category"
-                  className="flex items-center p-2 space-x-3 rounded-md"
+                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
                   onClick={handleClose}
                 >
                   <HiOutlineFolder className="w-4 h-4" />
@@ -99,7 +95,7 @@ export default function Sidebar({ close }) {
               <li>
                 <Link
                   href="/dashboard/subcategory"
-                  className="flex items-center p-2 space-x-3 rounded-md"
+                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
                   onClick={handleClose}
                 >
                   <HiOutlineTag className="w-4 h-4" />
@@ -109,7 +105,7 @@ export default function Sidebar({ close }) {
               <li>
                 <Link
                   href="/dashboard/upload-product"
-                  className="flex items-center p-2 space-x-3 rounded-md"
+                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
                   onClick={handleClose}
                 >
                   <HiOutlineUpload className="w-4 h-4" />
@@ -120,7 +116,7 @@ export default function Sidebar({ close }) {
               <li>
                 <Link
                   href="/dashboard/product"
-                  className="flex items-center p-2 space-x-3 rounded-md"
+                  className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
                   onClick={handleClose}
                 >
                   <HiOutlineShoppingCart className="w-4 h-4" />
@@ -135,7 +131,7 @@ export default function Sidebar({ close }) {
           <li>
             <Link
               href="/dashboard/myorders"
-              className="flex items-center p-2 space-x-3 rounded-md"
+              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
               onClick={handleClose}
             >
               <HiOutlineShoppingCart className="w-4 h-4" />
@@ -146,7 +142,7 @@ export default function Sidebar({ close }) {
           <li>
             <Link
               href="/dashboard/address"
-              className="flex items-center p-2 space-x-3 rounded-md"
+              className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
               onClick={handleClose}
             >
               <HiOutlineHome className="w-4 h-4" />
@@ -159,7 +155,7 @@ export default function Sidebar({ close }) {
         <div className="pt-4 pb-2 space-y-1 text-sm">
           <button
             onClick={handleLogout}
-            className="flex items-center p-2 space-x-3 rounded-md"
+            className="flex items-center p-2 space-x-3 rounded-md hover:bg-gray-300"
           >
             <HiOutlineLogout className="w-4 h-4" />
             <span>Logout</span>

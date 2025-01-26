@@ -169,7 +169,7 @@ export async function signin(req, res) {
 
 export async function signout(req, res) {
   try {
-    const userId = req.userId // req.userId is coming from the middleware
+    const userId = req.userId
 
     if (!userId) {
       return res.status(400).json({
@@ -453,20 +453,18 @@ export async function updateProfilUser(req, res) {
     const { name, email, mobile, password } = req.body
 
     let hashedPassword = ''
-
     if (password) {
       hashedPassword = bcryptjs.hashSync(password, 10)
     }
 
-    const updateUser = await UserModel.updateOne(
-      { _id: userId },
-      {
-        ...(name && { name: name }),
-        ...(email && { email: email }),
-        ...(mobile && { mobile: mobile }),
-        ...(password && { password: hashedPassword }),
-      }
-    )
+    const updateData = {
+      ...(name && { name }),
+      ...(email && { email }),
+      mobile: mobile || null,
+      ...(password && { password: hashedPassword }),
+    }
+
+    const updateUser = await UserModel.updateOne({ _id: userId }, updateData)
 
     return res.status(200).json({
       message: 'User updated successfully',

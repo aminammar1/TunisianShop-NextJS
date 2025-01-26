@@ -11,6 +11,8 @@ import AxiosToastError from '@/utils/AxiosToastError'
 import { setUser } from '@/store/userSlice'
 import fetchUserDetails from '@/utils/UserDetails'
 import { ClipLoader } from 'react-spinners'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 export default function ProfileUser() {
   const user = useSelector((state) => state.user)
@@ -36,7 +38,7 @@ export default function ProfileUser() {
   }
 
   const handleMobileChange = (value) => {
-    setUserData({ ...userData, mobile: value })
+    setUserData({ ...userData, mobile: value || null })
   }
 
   const handleImageUpload = async (e) => {
@@ -90,7 +92,7 @@ export default function ProfileUser() {
   return (
     <div className="p-4">
       {/** Profile Image Upload */}
-      <div className="w-20 h-20 bg-red-500 flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm">
+      <div className="w-20 h-20  flex items-center justify-center rounded-full overflow-hidden drop-shadow-sm">
         {user.avatar ? (
           <Image
             alt={user.name}
@@ -121,7 +123,7 @@ export default function ProfileUser() {
 
       {/** User Info Form */}
       <form className="my-4 grid gap-6" onSubmit={handleSubmit}>
-        {/** Floating Label for Name */}
+        {/**  Label for Name */}
         <div className="relative">
           <input
             type="text"
@@ -141,7 +143,7 @@ export default function ProfileUser() {
           </label>
         </div>
 
-        {/** Floating Label for Email */}
+        {/**  Label for Email */}
         <div className="relative">
           <input
             type="email"
@@ -161,15 +163,16 @@ export default function ProfileUser() {
           </label>
         </div>
 
-        {/** Floating Label for Mobile */}
+        {/**  Label for Mobile */}
         <div className="relative">
-          <input
-            id="mobile"
-            placeholder=" "
-            value={userData.mobile}
-            onChange={handleMobileChange}
-            className="block w-full p-3 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent peer"
-            required
+          <PhoneInput
+            country={'tn'}
+            value={userData.mobile || ''}
+            onChange={(value) => handleMobileChange(value)}
+            inputClass="w-full p-3 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            buttonClass="bg-transparent border-none"
+            placeholder="Enter your mobile number"
+            isValid={(value) => true}
           />
           <label
             htmlFor="mobile"

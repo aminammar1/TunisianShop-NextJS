@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
 const userSchema = new mongoose.Schema(
   {
@@ -17,15 +17,15 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "",
+      default: '',
     },
     mobile: {
-      type: Number,
+      type: String,
       default: null,
     },
     refresh_token: {
       type: String,
-      default: "",
+      default: '',
     },
     verify_email: {
       type: Boolean,
@@ -33,29 +33,29 @@ const userSchema = new mongoose.Schema(
     },
     last_login_date: {
       type: Date,
-      default: "",
+      default: '',
     },
     status: {
       type: String,
-      enum: ["Active", "Inactive", "Suspended"],
-      default: "Active",
+      enum: ['Active', 'Inactive', 'Suspended'],
+      default: 'Active',
     },
     address_details: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "address",
+        ref: 'address',
       },
     ],
     shopping_cart: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "cartProduct",
+        ref: 'cartProduct',
       },
     ],
     orderHistory: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "order",
+        ref: 'order',
       },
     ],
     forgot_password_otp: {
@@ -64,19 +64,19 @@ const userSchema = new mongoose.Schema(
     },
     forgot_password_expiry: {
       type: Date,
-      default: "",
+      default: '',
     },
     role: {
       type: String,
-      enum: ["ADMIN", "USER"],
-      default: "USER",
+      enum: ['ADMIN', 'USER'],
+      default: 'USER',
     },
   },
   {
     timestamps: true,
   }
-);
+)
 
-const UserModel = mongoose.model("User", userSchema);
+const UserModel = mongoose.model('User', userSchema)
 
-export default UserModel;
+export default UserModel
