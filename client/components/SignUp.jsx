@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import Axios from '@/utils/Axios'
 import AxiosToastError from '@/utils/AxiosToastError'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa6'
 import { ClipLoader } from 'react-spinners'
 

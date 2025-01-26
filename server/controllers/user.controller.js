@@ -410,7 +410,7 @@ export async function userDetails(req, res) {
     }
     return res
       .status(200)
-      .json({ message: 'User found', data: user, error: false })
+      .json({ message: 'User found', data: user, error: false, success: true })
   } catch (error) {
     return res.status(500).json({
       message: error.message || 'Internal Server Error',
@@ -485,20 +485,28 @@ export async function updateProfilUser(req, res) {
 export const googleauth = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: req.body.email })
+
     if (user) {
       const accessToken = await generateAccessToken(user._id)
       const refreshToken = await generateRefreshToken(user._id)
+
       const cookiesOption = {
         httpOnly: true,
         secure: true,
         sameSite: 'None',
       }
+
       res.cookie('accessToken', accessToken, cookiesOption)
       res.cookie('refreshToken', refreshToken, cookiesOption)
+
       return res.status(200).json({
         message: 'Login with google successfully',
         error: false,
         success: true,
+        data: {
+          accessToken,
+          refreshToken,
+        },
       })
     } else {
       const generatepaswword = generatePassword()
@@ -528,6 +536,10 @@ export const googleauth = async (req, res) => {
         message: 'Login with google successfully',
         error: false,
         success: true,
+        data: {
+          accessToken,
+          refreshToken,
+        },
       })
     }
   } catch (error) {

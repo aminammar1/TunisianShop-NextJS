@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import Axios from '@/utils/Axios'
 import fetchUserDetails from '@/utils/UserDetails'
 import AxiosToastError from '@/utils/AxiosToastError'

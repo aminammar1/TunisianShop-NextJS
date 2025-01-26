@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaRegUserCircle } from 'react-icons/fa'
 import Axios from '@/utils/Axios'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import toast from 'react-hot-toast'
 import AxiosToastError from '@/utils/AxiosToastError'
 import { setUser } from '@/store/userSlice'
@@ -51,7 +51,6 @@ export default function ProfileUser() {
       const response = await Axios({
         ...GlobalApi.uploadAvatar,
         data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' },
       })
 
       if (response.data.success) {

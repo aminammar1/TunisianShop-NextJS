@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import Axios from '@/utils/Axios'
 import AxiosToastError from '@/utils/AxiosToastError'
 import { updatedAvatar } from '@/store/userSlice'

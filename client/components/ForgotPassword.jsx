@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import toast from 'react-hot-toast'
 import Axios from '@/utils/Axios'
 import AxiosToastError from '@/utils/AxiosToastError'

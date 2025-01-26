@@ -1,5 +1,5 @@
 import Axios from '@/utils/Axios'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 
 const fetchUserDetails = async () => {
   try {

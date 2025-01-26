@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 import AxiosToastError from '@/utils/AxiosToastError'
 import { ClipLoader } from 'react-spinners'
 import Axios from '@/utils/Axios'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 
 export default function VerifyOtp() {
   const router = useRouter()

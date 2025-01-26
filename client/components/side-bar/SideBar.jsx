@@ -9,7 +9,7 @@ import { logout } from '@/store/userSlice'
 import Axios from '@/utils/Axios'
 import toast from 'react-hot-toast'
 import AxiosToastError from '@/utils/AxiosToastError'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import isAdmin from '@/utils/AdminVerify'
 import {
   HiOutlineUser,

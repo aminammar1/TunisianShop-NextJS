@@ -10,7 +10,7 @@ import { logout } from '@/store/userSlice'
 import Axios from '@/utils/Axios'
 import toast from 'react-hot-toast'
 import AxiosToastError from '@/utils/AxiosToastError'
-import GlobalApi from '@/app/api/GlobalApi'
+import GlobalApi from '@/api/GlobalApi'
 import isAdmin from '@/utils/AdminVerify'
 
 export default function UserMenu({ close }) {
@@ -46,7 +46,7 @@ export default function UserMenu({ close }) {
     <div className="bg-white shadow-sm rounded-lg w-64 p-3 divide-y divide-gray-200">
       <div className="flex items-center space-x-3 pb-3">
         <Image
-          src={user.avatar || "/assets/images/default-avatar.png"}
+          src={user.avatar || '/assets/images/profile.png'}
           alt="User Avatar"
           width={40}
           height={40}
