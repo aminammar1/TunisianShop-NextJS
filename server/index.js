@@ -8,6 +8,7 @@ import { connectDB } from './config/ConnectDB.js'
 import userRoutes from './routes/user.route.js'
 import categoryRoutes from './routes/category.route.js'
 import subCategoryRoutes from './routes/subcategory.route.js'
+import productRoutes from './routes/product.route.js'
 dotenv.config()
 
 const app = express()
@@ -32,6 +33,7 @@ const PORT = process.env.PORT || 5000
 app.use('/api/user', userRoutes)
 app.use('/api/category', categoryRoutes)
 app.use('/api/subCategory', subCategoryRoutes)
+app.use('/api/product', productRoutes)
 
 // Connect to MongoDB
 connectDB().then(() => {

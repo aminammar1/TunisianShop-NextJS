@@ -4,7 +4,7 @@ export const createSubCategory = async (req, res) => {
   try {
     const { name, image, id_category } = req.body
 
-    if (!name || !image || !id_category) {
+    if (!name || !image || !id_category[0]) {
       return res.status(400).json({
         message: 'Please fill in all fields',
         error: true,
