@@ -9,6 +9,8 @@ import userRoutes from './routes/user.route.js'
 import categoryRoutes from './routes/category.route.js'
 import subCategoryRoutes from './routes/subcategory.route.js'
 import productRoutes from './routes/product.route.js'
+import adressRoutes from './routes/adress.route.js'
+import cartRoutes from './routes/cart.route.js'
 dotenv.config()
 
 const app = express()
@@ -34,6 +36,8 @@ app.use('/api/user', userRoutes)
 app.use('/api/category', categoryRoutes)
 app.use('/api/subCategory', subCategoryRoutes)
 app.use('/api/product', productRoutes)
+app.use ('/api/adress' , adressRoutes)
+app.use ('/api/cart' , cartRoutes)
 
 // Connect to MongoDB
 connectDB().then(() => {
