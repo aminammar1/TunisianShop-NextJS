@@ -40,3 +40,247 @@ export const createProduct = async (req, res) => {
 }
 
 
+    export const getProducts = async (req, res) => {
+        try {
+            let { page , limit , search } = req.query;
+            if (!page) {
+                page = 1;
+            }
+            if (!limit) {
+                limit = 10;
+            }
+            const query =  search ? { $text: { $search: search } } : {};
+            const skip = (page - 1) * limit;
+            
+            const [data , total] = await Promise.all([
+                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('id_category id_subCategory'),
+                ProductModel.countDocuments(query)
+            ])
+            
+            return res.status(200).json({ message: 'Products found!' , 
+                success : true , 
+                error : false , 
+                data : data , 
+                total : total ,
+                totalPages : Math.ceil(total / limit)
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message , 
+                success : false , 
+                error : true 
+            });
+        }
+    }
+
+    export const getProductByCategory = async (req, res) => {
+         try {
+            const {categoryID} = req.body 
+
+            if (!categoryID){
+                return res.status(400).json({
+                    message: 'Please provide the id of the category',
+                    error: true,
+                    success: false
+                })
+            }
+            const product = await ProductModel.find ({ id_category : {$in : categoryID } }).limit(10)
+
+            if (!product){
+                return res.status(404).json({
+                    message: 'Product not found',
+                    success: false,
+                    error: true
+                })
+            }
+             
+            return res.status(200).json({
+                message: 'Products found',
+                success: true,
+                error: false,
+                data: product
+            }) 
+         } catch (error) {
+            return res.status(500).json({
+                message: error.message || 'Internal server error',
+                success: false,
+                error: true
+            })
+         }
+    } 
+
+
+    export const getProductByCategoryAndSubCategory = async (req, res) => {
+
+         try { 
+            const {categoryID , subCategoryID , page , limit} = req.body
+
+            if (!categoryID || !subCategoryID){
+                return res.status(400).json({
+                    message: 'Please provide the id of the category and subcategory',
+                    error: true,
+                    success: false
+                })
+            }
+            if (!page){
+                page = 1
+            }
+            if (!limit){
+                limit = 10
+            }
+            const query = { id_category : {$in : categoryID } , id_subCategory : {$in : subCategoryID } }
+            const skip = (page - 1) * limit
+
+            const [data , total] = await Promise.all([
+                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit),
+                ProductModel.countDocuments(query)
+            ])
+
+            return res.status(200).json({
+                message: 'Products found',
+                success: true,
+                error: false,
+                data: data,
+                total: total,
+                totalPages: Math.ceil(total / limit)
+            })
+            } catch (error) {
+                return res.status(500).json({
+                    message: error.message || 'Internal server error',
+                    success: false,
+                    error: true
+                })
+            }
+        }
+
+    
+      export const productDetails = async (req, res) => {
+         try { 
+            const {ProductID} = req.body
+
+            const product = await ProductModel.findById(ProductID)
+
+                if (!product){
+                    return res.status(404).json({
+                        message: 'Product not found',
+                        success: false,
+                        error: true
+                    })
+                }
+
+                return res.status(200).json({
+                    message: 'Product found',
+                    success: true,
+                    error: false,
+                    data: product
+                })
+            }
+                catch (error) {
+                    return res.status(500).json({
+                        message: error.message || 'Internal server error',
+                        success: false,
+                        error: true
+                    })
+                }
+            }
+
+
+    export const updateProduct = async (req, res) => {
+        try {
+            const {ProductId} = req.body
+
+            if (!ProductId){
+                return res.status(400).json({
+                    message: 'Please provide the id of the product',
+                    error: true,
+                    success: false
+                })
+            }
+
+            const updatedProduct = await ProductModel.findByIdAndUpdate(ProductId, req.body, {new : true})
+             
+                return res.status(200).json({
+                    message: 'Product updated',
+                    success: true,
+                    error: false,
+                    data: updatedProduct
+                })
+            } catch (error) {
+                return res.status(500).json({
+                    message: error.message || 'Internal server error',
+                    success: false,
+                    error: true
+                })
+            }
+        }
+
+
+    export const deleteProduct = async (req, res) => {
+        try {
+            const {ProductId} = req.body
+
+            if (!ProductId){
+                return res.status(400).json({
+                    message: 'Please provide the id of the product',
+                    error: true,
+                    success: false
+                })
+            }
+
+            const deletedProduct = await ProductModel.findByIdAndDelete(ProductId)
+                
+                    return res.status(200).json({
+                        message: 'Product deleted',
+                        success: true,
+                        error: false,
+                        data: deletedProduct
+                    })
+                } catch (error) {
+                    return res.status(500).json({
+                        message: error.message || 'Internal server error',
+                        success: false,
+                        error: true
+                    })
+                }
+            }
+
+
+
+    export const searchProduct = async (req, res) => {
+        try {
+            let { page , limit , search } = req.query;
+
+            if (!page) {
+                page = 1;
+            }
+
+            if (!limit) {
+                limit = 10;
+            }
+
+            const query =  search ? { $text: { $search: search } } : {};
+            const skip = (page - 1) * limit;
+
+            const [data , total] = await Promise.all([
+                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('id_category id_subCategory'),
+                ProductModel.countDocuments(query)
+            ])
+
+            return res.status(200).json({
+                message: 'Products found',
+                success: true,
+                error: false,
+                data: data,
+                total: total,
+                totalPages: Math.ceil(total / limit),
+                page: page,
+                limit: limit
+            })
+
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message || 'Internal server error',
+                success: false,
+                error: true
+            })
+        }
+    }

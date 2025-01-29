@@ -23,7 +23,7 @@ export const AddCategory = async (req, res) => {
 
     if (!saveCategory) {
       return res.status(400).json({
-        message: 'Category not added',
+        message: 'Category not saved',
         success: false,
         error: true,
       })
@@ -68,7 +68,6 @@ export const AddCategory = async (req, res) => {
   export const updateCategory = async (req, res) => {
     
     try {
-
       const { _id, name, image } = req.body
 
         const update = await CategoryModel.findByIdAndUpdate(_id, {
@@ -76,14 +75,6 @@ export const AddCategory = async (req, res) => {
           image,
 
         } , {new : true})
-
-        if (!update) {
-          return res.status(400).json({
-            message: 'Category not updated',
-            success: false,
-            error: true,
-          })
-        }
 
         return res.status(200).json({
           message: 'Category updated successfully',
