@@ -49,6 +49,26 @@ const GlobalApi = {
     url: '/api/user/google-auth',
     method: 'post',
   },
+  UploadImage: {
+    url: '/api/upload/upload-image',
+    method: 'post',
+  },
+  AddCategory: {
+    url: '/api/category/add-category',
+    method: 'post',
+  },
+  GetCategories: {
+    url: '/api/category/get-categories',
+    method: 'get',
+  },
+  updateCategory: {
+    url: '/api/category/update-category',
+    method: 'put',
+  },
+  deleteCategory: {
+    url: '/api/category/delete-category',
+    method: 'delete',
+  },
 }
 
 export default GlobalApi
