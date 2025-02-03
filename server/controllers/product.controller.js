@@ -3,9 +3,9 @@ import ProductModel from '../models/product.model.js';
 
 export const createProduct = async (req, res) => {
     try {
-        const { name , image , id_category , id_subCategory , unit , stock , price , discount , description , more_details} = req.body
+        const { name , image , category , subCategory , unit , stock , price , discount , description , more_details} = req.body
         
-        if (!name || !image[0] || !id_category[0] || !id_subCategory[0] || !unit ||  !price || !discount || !description ) {
+        if (!name || !image[0] || !category[0] || !subCategory[0] || !unit ||  !price || !discount || !description ) {
             return res.status(400).json({ message: 'Please fill in all fields' , 
                 error : true , 
                  success : false 
@@ -14,8 +14,8 @@ export const createProduct = async (req, res) => {
         const newProduct = new ProductModel({
             name , 
             image , 
-            id_category , 
-            id_subCategory , 
+            category , 
+            subCategory , 
             unit , 
             stock , 
             price , 
@@ -41,6 +41,7 @@ export const createProduct = async (req, res) => {
 
 
     export const getProducts = async (req, res) => {
+        res.setHeader('Cache-Control', 'no-store')
         try {
             let { page , limit , search } = req.query;
             if (!page) {
@@ -49,11 +50,11 @@ export const createProduct = async (req, res) => {
             if (!limit) {
                 limit = 10;
             }
-            const query =  search ? { $text: { $search: search } } : {};
+            const query = search ? { name: { $regex: search, $options: "i" } } : {};
             const skip = (page - 1) * limit;
             
             const [data , total] = await Promise.all([
-                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('id_category id_subCategory'),
+                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('category subCategory'),
                 ProductModel.countDocuments(query)
             ])
             
@@ -73,6 +74,7 @@ export const createProduct = async (req, res) => {
     }
 
     export const getProductByCategory = async (req, res) => {
+        res.setHeader('Cache-Control', 'no-store')
          try {
             const {categoryID} = req.body 
 
@@ -83,7 +85,7 @@ export const createProduct = async (req, res) => {
                     success: false
                 })
             }
-            const product = await ProductModel.find ({ id_category : {$in : categoryID } }).limit(10)
+            const product = await ProductModel.find ({ category : {$in : categoryID } }).limit(10)
 
             if (!product){
                 return res.status(404).json({
@@ -110,6 +112,7 @@ export const createProduct = async (req, res) => {
 
 
     export const getProductByCategoryAndSubCategory = async (req, res) => {
+        res.setHeader('Cache-Control', 'no-store')
 
          try { 
             const {categoryID , subCategoryID , page , limit} = req.body
@@ -127,7 +130,7 @@ export const createProduct = async (req, res) => {
             if (!limit){
                 limit = 10
             }
-            const query = { id_category : {$in : categoryID } , id_subCategory : {$in : subCategoryID } }
+            const query = { category : {$in : categoryID } , subCategory : {$in : subCategoryID } }
             const skip = (page - 1) * limit
 
             const [data , total] = await Promise.all([
@@ -186,9 +189,9 @@ export const createProduct = async (req, res) => {
 
     export const updateProduct = async (req, res) => {
         try {
-            const {ProductId} = req.body
+            const {_id} = req.body
 
-            if (!ProductId){
+            if (!_id){
                 return res.status(400).json({
                     message: 'Please provide the id of the product',
                     error: true,
@@ -196,7 +199,7 @@ export const createProduct = async (req, res) => {
                 })
             }
 
-            const updatedProduct = await ProductModel.findByIdAndUpdate(ProductId, req.body, {new : true})
+            const updatedProduct = await ProductModel.findByIdAndUpdate(_id, req.body, {new : true})
              
                 return res.status(200).json({
                     message: 'Product updated',
@@ -216,9 +219,9 @@ export const createProduct = async (req, res) => {
 
     export const deleteProduct = async (req, res) => {
         try {
-            const {ProductId} = req.body
+            const {_id} = req.body
 
-            if (!ProductId){
+            if (!_id){
                 return res.status(400).json({
                     message: 'Please provide the id of the product',
                     error: true,
@@ -226,7 +229,7 @@ export const createProduct = async (req, res) => {
                 })
             }
 
-            const deletedProduct = await ProductModel.findByIdAndDelete(ProductId)
+            const deletedProduct = await ProductModel.findByIdAndDelete(_id)
                 
                     return res.status(200).json({
                         message: 'Product deleted',
@@ -261,7 +264,7 @@ export const createProduct = async (req, res) => {
             const skip = (page - 1) * limit;
 
             const [data , total] = await Promise.all([
-                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('id_category id_subCategory'),
+                ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('category subCategory'),
                 ProductModel.countDocuments(query)
             ])
 

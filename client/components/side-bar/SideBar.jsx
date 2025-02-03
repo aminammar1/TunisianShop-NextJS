@@ -4,6 +4,7 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation' 
 import { logout } from '@/store/userSlice'
 import Axios from '@/lib/Axios'
@@ -25,10 +26,12 @@ export default function Sidebar({ close }) {
   const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const pathname = usePathname()
+  const router = useRouter()
 
   const handleLogout = async () => {
     try {
       const response = await Axios({ ...GlobalApi.signout })
+      
       if (response.data.success) {
         if (close) {
           close()
@@ -36,6 +39,8 @@ export default function Sidebar({ close }) {
         dispatch(logout())
         localStorage.clear()
         toast.success('Logout successful')
+        router.push('/')
+        
       }
     } catch (error) {
       AxiosToastError(error)
@@ -59,7 +64,7 @@ export default function Sidebar({ close }) {
           className="rounded-full"
         />
         <div>
-          <h2 className="text-md font-semibold">{user.name || 'Guest'}</h2>
+          <h2 className="text-md font-semibold">{user.name }</h2>
           <span className="flex items-center space-x-1 text-md dark:text-gray-600">
             {user.role || 'User'}
           </span>

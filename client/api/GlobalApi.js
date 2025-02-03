@@ -69,6 +69,38 @@ const GlobalApi = {
     url: '/api/category/delete-category',
     method: 'delete',
   },
+  AddSubCategory: {
+    url: '/api/subCategory/create-subCategory',
+    method: 'post',
+  },
+  GetSubCategories: {
+    url: '/api/subCategory/get-subCategories',
+    method: 'get',
+  },
+  updateSubCategory: {
+    url: '/api/subCategory/update-subCategory',
+    method: 'put',
+  },
+  deleteSubCategory: {
+    url: '/api/subCategory/delete-subCategory',
+    method: 'delete',
+  },
+  AddProduct: {
+    url: '/api/product/create-product',
+    method: 'post',
+  },
+  GetProducts: {
+    url: '/api/product/get-products',
+    method: 'get',
+  },
+  UpdateProducts: {
+    url: '/api/product/update-product',
+    method: 'put',
+  },
+  DeleteProduct: {
+    url: '/api/product/delete-product',
+    method: 'delete',
+  },
 }
 
 export default GlobalApi

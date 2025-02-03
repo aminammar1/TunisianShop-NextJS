@@ -11,8 +11,6 @@ import AxiosToastError from '@/lib/AxiosToastError'
 import { setUser } from '@/store/userSlice'
 import fetchUserDetails from '@/lib/UserDetails'
 import { ClipLoader } from 'react-spinners'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
 
 export default function ProfileUser() {
   const user = useSelector((state) => state.user)
@@ -35,10 +33,6 @@ export default function ProfileUser() {
 
   const handleInputChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value })
-  }
-
-  const handleMobileChange = (value) => {
-    setUserData({ ...userData, mobile: value || null })
   }
 
   const handleImageUpload = async (e) => {
@@ -165,14 +159,15 @@ export default function ProfileUser() {
 
         {/**  Label for Mobile */}
         <div className="relative">
-          <PhoneInput
-            country={'tn'}
+        <input
+            type="tel"
+            id="mobile"
+            placeholder=" "
+            className="block w-full p-3 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent peer"
             value={userData.mobile || ''}
-            onChange={(value) => handleMobileChange(value)}
-            inputClass="w-full p-3 bg-transparent border border-gray-300 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
-            buttonClass="bg-transparent border-none"
-            placeholder="Enter your mobile number"
-            isValid={(value) => true}
+            name="mobile"
+            onChange={handleInputChange}
+            
           />
           <label
             htmlFor="mobile"

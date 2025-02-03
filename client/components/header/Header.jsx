@@ -43,6 +43,7 @@ export default function Header() {
               height={60}
               alt="logo"
               className="hidden lg:block"
+              priority
             />
             <Image
               src="/assets/images/logo.png"
@@ -50,6 +51,7 @@ export default function Header() {
               height={60}
               alt="logo"
               className="lg:hidden"
+              priority
             />
           </Link>
         </div>

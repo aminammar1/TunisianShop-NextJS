@@ -9,8 +9,12 @@ import AxiosToastError from '@/lib/AxiosToastError'
 import EditCategory from './EditCategory'
 import CofirmBox from '../ConfirmeBox'
 import toast from 'react-hot-toast'
+import { setAllCategory } from '@/store/ProductSlice'
+import { useDispatch } from 'react-redux'
+
 export default function Category() {
   const [openUploadCategory, setOpenUploadCategory] = useState(false)
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
   const [categoryData, setCategoryData] = useState([])
   const [openEdit, setOpenEdit] = useState(false)
@@ -33,6 +37,7 @@ export default function Category() {
 
       if (responseData.success) {
         setCategoryData(responseData.data)
+        dispatch(setAllCategory(responseData.data))
       }
     } catch (error) {
       console.log(error)
@@ -52,6 +57,7 @@ export default function Category() {
         data: deleteCategory,
       })
       const { data: responseData } = response
+
       if (responseData.success) {
         toast.success(responseData.message)
         fetchCategory()
@@ -73,16 +79,24 @@ export default function Category() {
         </button>
       </div>
       {!categoryData[0] && !loading && <NoData />}
-      <div className="p-4 grid  grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
-        {categoryData.map((category, index) => {
+      <div className="p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
+        {categoryData.map((category) => {
           return (
-            <div className="w-32 h-56 rounded shadow-md" key={category._id}>
-              <img
-                alt={category.name}
-                src={category.image}
-                className="w-full object-scale-down"
-              />
-              <div className="items-center h-9 flex gap-2">
+            <div
+              key={category._id}
+              className="w-32 h-56 flex flex-col rounded shadow-md overflow-hidden"
+            >
+              {/* Image container with fixed height */}
+              <div className="h-40 w-full">
+                <img
+                  alt={category.name}
+                  src={category.image}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              {/* Button area with fixed height */}
+              <div className="h-16 flex items-center gap-2 p-1">
                 <button
                   onClick={() => {
                     setOpenEdit(true)

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
+    "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.9",
     "firebase": "^11.2.0",
     "lucide-react": "^0.472.0",
