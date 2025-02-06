@@ -5,7 +5,7 @@ import GlobalApi from '@/api/GlobalApi'
 import Axios from '@/lib/Axios'
 import AxiosToastError from '@/lib/AxiosToastError'
 import Loading from '../Loading'
-import ProductCard from './ProductCard'
+import ProductCard from './ProductCardAdmin'
 import { IoSearchOutline } from 'react-icons/io5'
 
 export default function Products() {
@@ -20,7 +20,7 @@ export default function Products() {
       setLoading(true)
       const response = await Axios({
         ...GlobalApi.GetProducts,
-        params: { page, limit: 6, search: search.trim() }, // Change limit to 6
+        params: { page, limit: 6, search: search.trim() }, 
       })
       
       const { data: responseData } = response
@@ -40,7 +40,7 @@ export default function Products() {
   }, [page])
 
   const handleNext = () => {
-    if (productData.length === 6) setPage(prev => prev + 1) // Check for exactly 6 items
+    if (productData.length === 6) setPage(prev => prev + 1) 
   }
   const handlePrevious = () => {
     if (page > 1) setPage(prev => prev - 1)

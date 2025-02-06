@@ -101,6 +101,10 @@ const GlobalApi = {
     url: '/api/product/delete-product',
     method: 'delete',
   },
+  ProductByCategory: {
+    url: '/api/product/products-by-category',
+    method: 'get',
+  },
 }
 
 export default GlobalApi

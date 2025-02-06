@@ -74,41 +74,42 @@ export const createProduct = async (req, res) => {
     }
 
     export const getProductByCategory = async (req, res) => {
-        res.setHeader('Cache-Control', 'no-store')
-         try {
-            const {categoryID} = req.body 
-
-            if (!categoryID){
-                return res.status(400).json({
-                    message: 'Please provide the id of the category',
-                    error: true,
-                    success: false
-                })
-            }
-            const product = await ProductModel.find ({ category : {$in : categoryID } }).limit(10)
-
-            if (!product){
-                return res.status(404).json({
-                    message: 'Product not found',
-                    success: false,
-                    error: true
-                })
-            }
-             
-            return res.status(200).json({
-                message: 'Products found',
-                success: true,
-                error: false,
-                data: product
-            }) 
-         } catch (error) {
-            return res.status(500).json({
-                message: error.message || 'Internal server error',
-                success: false,
-                error: true
-            })
-         }
-    } 
+        res.setHeader('Cache-Control', 'no-store');
+        try {
+          const { _id } = req.query;
+      
+          if (!_id) {
+            return res.status(400).json({
+              message: 'Category ID required',
+              error: true,
+              success: false
+            });
+          }
+          
+          const products = await ProductModel.find({ category: _id }).limit(10);
+      
+          if (products.length === 0) {
+            return res.status(404).json({
+              message: 'No products found for this category',
+              success: false,
+              error: true
+            });
+          }
+      
+          return res.status(200).json({
+            message: 'Products found',
+            success: true,
+            error: false,
+            data: products
+          });
+        } catch (error) {
+          return res.status(500).json({
+            message: error.message || 'Internal server error',
+            success: false,
+            error: true
+          });
+        }
+      };
 
 
     export const getProductByCategoryAndSubCategory = async (req, res) => {
