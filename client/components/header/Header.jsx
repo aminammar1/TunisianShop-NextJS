@@ -7,13 +7,13 @@ import Search from '../search/Search'
 import Image from 'next/image'
 import UserMenu from '../user-menu/UserMenu'
 //import useMobile from "../hooks/useMobile";
-//import { DisplayPrice } from "../utils/DisplayPrice";
-import DisplayCartItem from '../display-card/DisplayCartItem'
 import { useSelector } from 'react-redux'
-//import {useGlobalContext} from "../provider/GlobalProvider";
 import { FaRegCircleUser } from 'react-icons/fa6'
 import { BsCart3 } from 'react-icons/bs'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
+import DisplayCartItem from '../DisplayCart'
+import { useGlobalContext } from '@/providers/GlobalProvider'
+import { DisplayPrice } from '@/lib/DisplayPrice'
 
 export default function Header() {
   //const [isMobile] = useMobile();
@@ -22,6 +22,8 @@ export default function Header() {
   const [openCart, SetopenCart] = useState(false)
   const router = useRouter()
   const user = useSelector((state) => state?.user)
+  const cartItem = useSelector(state => state.cartItem.cart)
+  const { totalPrice, totalQty } = useGlobalContext()
 
   const handleCloseUserMenu = () => {
     SetopenUserMenu(false)
@@ -108,13 +110,20 @@ export default function Header() {
                 <BsCart3 size={26} />
               </div>
               <div className="font-bold text-sm">
-                {' '}
-                <p> My Cart</p>
+                {cartItem[0] ? (
+                  <div>
+                    <p>{totalQty} Items</p>
+                    <p>{DisplayPrice(totalPrice)}</p>
+                  </div>
+                ) : (
+                  <p>My Cart</p>
+                )}
               </div>
             </button>
           </div>
         </div>
       </div>
+      {openCart && <DisplayCartItem close={() => SetopenCart(false)} />}
     </header>
   )
 }

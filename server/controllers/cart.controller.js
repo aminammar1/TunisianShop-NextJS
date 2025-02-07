@@ -57,6 +57,7 @@ import UserModel from "../models/user.model.js";
 
     export const getCart  = async (req, res) => {
         try {
+            res.setHeader('Cache-Control', 'no-store')
             const userId = req.userId
 
             const cart = await CartModel.find({userId}).populate('productId')

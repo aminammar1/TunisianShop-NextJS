@@ -5,12 +5,7 @@ import { DisplayPrice } from '@/lib/DisplayPrice'
 import Link from 'next/link'
 import { valideURLConvert } from '@/lib/valideURLConvert'
 import { pricewithDiscount } from '@/lib/PriceWithDiscount'
-import GlobalApi from '@/api/GlobalApi'
-import toast from 'react-hot-toast'
-import Axios from '@/lib/Axios'
-import AxiosToastError from '@/lib/AxiosToastError'
-//import AddtoCart from "@/components/AddtoCart"
-
+import AddToCartButton from './AddToCartButton'
 
 export default function CardProduct({data}) {
     const url = `/product/${valideURLConvert(data.name)}-${data._id}`
@@ -51,7 +46,7 @@ export default function CardProduct({data}) {
             
             
           </div>
-          { /*
+          
           <div className=''>
             {
               data.stock == 0 ? (
@@ -61,7 +56,7 @@ export default function CardProduct({data}) {
               )
             }
               
-          </div> */ }
+          </div> 
         </div>
   
       </Link>

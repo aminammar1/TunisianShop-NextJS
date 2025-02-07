@@ -159,9 +159,9 @@ export const createProduct = async (req, res) => {
     
       export const productDetails = async (req, res) => {
          try { 
-            const {ProductID} = req.body
+            const {productId} = req.body
 
-            const product = await ProductModel.findById(ProductID)
+            const product = await ProductModel.findById(productId)
 
                 if (!product){
                     return res.status(404).json({

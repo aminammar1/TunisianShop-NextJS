@@ -105,6 +105,23 @@ const GlobalApi = {
     url: '/api/product/products-by-category',
     method: 'get',
   },
+  
+  AddToCart : {
+    url: '/api/cart/add-cart',
+    method: 'post',
+  },
+  GetCart : {
+    url: '/api/cart/get-cart',
+    method: 'get',
+  },
+  UpdateCart : {
+    url: '/api/cart/update-cart',
+    method: 'put',
+  },
+  DeleteCart : {
+    url: '/api/cart/delete-cart',
+    method: 'delete',
+  },
 }
 
 export default GlobalApi
