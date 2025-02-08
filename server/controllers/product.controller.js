@@ -159,7 +159,9 @@ export const createProduct = async (req, res) => {
     
       export const productDetails = async (req, res) => {
          try { 
-            const {productId} = req.body
+            res.setHeader('Cache-Control', 'no-store');
+
+            const {productId} = req.query
 
             const product = await ProductModel.findById(productId)
 

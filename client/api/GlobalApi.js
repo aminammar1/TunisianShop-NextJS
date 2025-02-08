@@ -105,20 +105,23 @@ const GlobalApi = {
     url: '/api/product/products-by-category',
     method: 'get',
   },
-  
-  AddToCart : {
+  GetProductDetails: {
+    url: '/api/product/productDetails',
+    method: 'get',
+  },
+  AddToCart: {
     url: '/api/cart/add-cart',
     method: 'post',
   },
-  GetCart : {
+  GetCart: {
     url: '/api/cart/get-cart',
     method: 'get',
   },
-  UpdateCart : {
+  UpdateCart: {
     url: '/api/cart/update-cart',
     method: 'put',
   },
-  DeleteCart : {
+  DeleteCart: {
     url: '/api/cart/delete-cart',
     method: 'delete',
   },
