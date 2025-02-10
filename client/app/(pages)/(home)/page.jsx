@@ -13,7 +13,6 @@ export default function page() {
   const categoryData = useSelector((state) => state.product.allCategory)
   const subCategoryData = useSelector((state) => state.product.allSubCategory)
 
-  
   const handleRedirectProductListpage = (id, cat) => {
     const subcategory = subCategoryData.find((sub) =>
       sub.category.some((c) => c === id)
@@ -24,12 +23,14 @@ export default function page() {
       return
     }
 
-    const url = `/${valideURLConvert(cat)}-${id}/${valideURLConvert(
+    console.log("subcategory:", subcategory);
+
+    const url = `/productList/${valideURLConvert(cat)}-${id}/${valideURLConvert(
       subcategory.name
     )}-${subcategory._id}`
 
     router.push(url)
-    console.log (url)
+    console.log(url)
   }
 
   return (
@@ -53,10 +54,10 @@ export default function page() {
         </div>
       </div>
 
-       {/* Space after Banner */}
-       <div className="h-6 "></div>
+      {/* Space after Banner */}
+      <div className="h-6 "></div>
 
-       {/* Categories Section */}
+      {/* Categories Section */}
       <div className="container mx-auto px-4 my-8">
         <h2 className="text-xl font-bold mb-6">Categories</h2>
         <div className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2">
@@ -77,7 +78,7 @@ export default function page() {
             </div>
           ))}
         </div>
-        </div>
+      </div>
 
       {/***display category product */}
       {categoryData?.map((c, index) => {

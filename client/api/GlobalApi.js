@@ -109,6 +109,10 @@ const GlobalApi = {
     url: '/api/product/productDetails',
     method: 'get',
   },
+  GetProductByCategoryAndSubCategory: {
+    url: '/api/product/products-by-categorAndSubCategory',
+    method: 'get',
+  },
   AddToCart: {
     url: '/api/cart/add-cart',
     method: 'post',
