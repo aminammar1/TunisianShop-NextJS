@@ -250,18 +250,18 @@ export const createProduct = async (req, res) => {
 
     export const searchProduct = async (req, res) => {
         try {
-            let { page , limit , search } = req.query;
+            let { page , limit , search } = req.query
 
             if (!page) {
-                page = 1;
+                page = 1
             }
 
             if (!limit) {
-                limit = 10;
+                limit = 10
             }
 
-            const query =  search ? { $text: { $search: search } } : {};
-            const skip = (page - 1) * limit;
+            const query = search ? { name: { $regex: search, $options: 'i' } } : {}
+            const skip = (page - 1) * limit
 
             const [data , total] = await Promise.all([
                 ProductModel.find(query).sort({createdAt : -1 }).skip(skip).limit(limit).populate('category subCategory'),

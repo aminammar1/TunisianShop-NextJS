@@ -113,6 +113,10 @@ const GlobalApi = {
     url: '/api/product/products-by-categorAndSubCategory',
     method: 'get',
   },
+  SearchProduct: {
+    url: '/api/product/search-product',
+    method: 'get',
+  },
   AddToCart: {
     url: '/api/cart/add-cart',
     method: 'post',

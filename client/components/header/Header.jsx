@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import Search from '../search/Search'
+import Search from '../search-button/Search'
 import Image from 'next/image'
 import UserMenu from '../user-menu/UserMenu'
 //import useMobile from "../hooks/useMobile";
