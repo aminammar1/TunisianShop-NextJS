@@ -28,3 +28,14 @@ body {
   width: 10px;
   @apply bg-slate-100;
 }
+
+/* Make NProgress red */
+#nprogress .bar {
+  background: #dc2626 !important; /* Tailwind red-600 */
+  height: 3px !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px #dc2626, 0 0 5px #dc2626;
+}
+

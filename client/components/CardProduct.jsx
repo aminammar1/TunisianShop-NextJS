@@ -19,9 +19,6 @@ export default function CardProduct({data}) {
               />
         </div>
         <div className='flex items-center gap-1'>
-          <div className='rounded text-xs w-fit p-[1px] px-2 text-red-600 bg-red-50'>
-                10 min 
-          </div>
           <div>
               {
                 Boolean(data.discount) && (

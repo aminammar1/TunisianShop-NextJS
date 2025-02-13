@@ -13,6 +13,8 @@ import Axios from '@/lib/Axios'
 import toast from 'react-hot-toast'
 import AxiosToastError from '@/lib/AxiosToastError'
 import { ClipLoader } from 'react-spinners'
+
+
 export default function UploadProduct() {
   const [data, setData] = useState({
     name: '',

@@ -13,6 +13,7 @@ import GlobalApi from '@/api/GlobalApi'
 import AxiosToastError from '@/lib/AxiosToastError'
 import toast from 'react-hot-toast'
 import { ClipLoader } from 'react-spinners'
+import Loading from '../Loading'
 
 export default function EditProduct({close , data: propsData , fetchProductData}) {
     const [data, setData] = useState({
@@ -37,7 +38,7 @@ export default function EditProduct({close , data: propsData , fetchProductData}
       const allSubCategory = useSelector(state => state.product.allSubCategory)
       const [openAddField, setOpenAddField] = useState(false)
       const [fieldName, setFieldName] = useState("")
-      const [Loading , setLoading] = useState(false)
+      const [loading , setLoading] = useState(false)
 
       const handleChange = (e) => {
         setData({ ...data, [e.target.name]: e.target.value })
@@ -410,7 +411,7 @@ export default function EditProduct({close , data: propsData , fetchProductData}
           <button
             className='bg-red-600 hover:bg-red-900 py-2 rounded-md text-white'
           >
-           {Loading ? <ClipLoader color='#fff' size={20} /> : "Update Product"}
+           {loading ? <ClipLoader color='#fff' size={20} /> : "Update Product"}
           </button>
         </form>
       </div>
