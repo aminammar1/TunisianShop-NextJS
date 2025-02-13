@@ -10,7 +10,7 @@ export const createAdress = async (req, res) => {
 
         const newAdress = new AdressModel({
             street, city, state, zip, country, mobile, userId : userId
-        });
+        })
 
         const savedAdress = await newAdress.save();
 
@@ -25,7 +25,7 @@ export const createAdress = async (req, res) => {
         return res.status(500).json({ message: error.message || 'Internal server error',
             success: false,
             error: true
-        });
+        })
     }
 }
 
@@ -40,12 +40,12 @@ export const createAdress = async (req, res) => {
                 success: true ,
                 error: false ,
                 data: userAdress
-            });
+            })
             } catch (error) {
             return res.status(500).json({ message: error.message || 'Internal server error',
                 success: false,
                 error: true
-            });
+            })
         }
     }
 
@@ -62,12 +62,12 @@ export const createAdress = async (req, res) => {
                     success: true ,
                     error: false ,
                     data: updatedAdress
-                });
+                })
             } catch (error) {
                 return res.status(500).json({ message: error.message || 'Internal server error',
                     success: false,
                     error: true
-                });
+                })
             }
         }
 
@@ -89,7 +89,7 @@ export const createAdress = async (req, res) => {
                 return res.status(500).json({ message: error.message || 'Internal server error',
                     success: false,
                     error: true
-                });
+                })
             }
         }    
 

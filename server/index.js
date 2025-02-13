@@ -12,6 +12,8 @@ import subCategoryRoutes from './routes/subcategory.route.js'
 import productRoutes from './routes/product.route.js'
 import adressRoutes from './routes/adress.route.js'
 import cartRoutes from './routes/cart.route.js'
+import OrderRoutes from './routes/order.route.js'
+
 dotenv.config()
 
 const app = express()
@@ -40,6 +42,7 @@ app.use('/api/subCategory', subCategoryRoutes)
 app.use('/api/product', productRoutes)
 app.use('/api/adress', adressRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/order', OrderRoutes)
 
 // Connect to MongoDB
 connectDB().then(() => {
