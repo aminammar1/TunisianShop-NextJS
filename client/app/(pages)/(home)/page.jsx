@@ -6,8 +6,11 @@ import { valideURLConvert } from '@/lib/valideURLConvert'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import CategoryAndProduct from '@/components/CategoryAndProduct'
+import NewsLetter from '@/components/NewsLetter'
+import Footer from '@/components/footer/Footer'
+import { motion } from 'framer-motion'
 
-export default function page() {
+export default function HomePage() {
   const banner = '/assets/images/Banner.png'
   const router = useRouter()
   const categoryData = useSelector((state) => state.product.allCategory)
@@ -23,73 +26,74 @@ export default function page() {
       return
     }
 
-    console.log("subcategory:", subcategory);
-
     const url = `/productList/${valideURLConvert(cat)}-${id}/${valideURLConvert(
       subcategory.name
     )}-${subcategory._id}`
 
     router.push(url)
-    console.log(url)
   }
 
   return (
-    <section className="bg-white">
-      <div className="container mx-auto mt-6">
-        <div
-          className={`w-full h-full min-h-48 bg-gray-100 rounded ${
-            !banner && 'animate-pulse my-2'
-          } `}
-        >
-          {/* Banner for desktop */}
+    <motion.section className="bg-white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+      <div className="container mx-auto mt-8 px-6">
+        {/* Banner Section */}
+        <div className="w-full rounded-lg overflow-hidden bg-gray-100 min-h-[200px] flex justify-center items-center">
           <Image
             src={banner}
             alt="banner"
             width={1466}
             height={310}
-            className="w-full h-full hidden lg:block rounded"
+            className="w-full h-auto hidden lg:block rounded-lg"
             priority
           />
-          {/* Banner for mobile */}
         </div>
       </div>
 
-      {/* Space after Banner */}
-      <div className="h-6 "></div>
-
       {/* Categories Section */}
-      <div className="container mx-auto px-4 my-8">
-        <h2 className="text-xl font-bold mb-6">Categories</h2>
-        <div className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2">
-          {categoryData.map((cat, index) => (
+      <div className="container mx-auto px-6 my-12">
+        <h2 className="text-2xl font-bold mb-8 text-gray-800">Categories</h2>
+        <motion.div 
+          className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {categoryData.map((cat) => (
             <div
-              key={cat._id + 'displayCategory'}
-              className="flex flex-col items-center cursor-pointer"
+              key={cat._id}
+              className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105"
               onClick={() => handleRedirectProductListpage(cat._id, cat.name)}
             >
               <img
                 src={cat.image}
                 alt={cat.name}
-                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-cover rounded-lg shadow-md bg-blue-50"
+                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-cover rounded-lg bg-blue-50"
               />
-              <p className="text-center mt-2 text-xs md:text-sm lg:text-base font-normal">
+              <p className="mt-2 text-xs md:text-sm lg:text-base font-normal text-gray-700">
                 {cat.name}
               </p>
             </div>
           ))}
-        </div>
+        </motion.div>
       </div>
 
-      {/***display category product */}
-      {categoryData?.map((c, index) => {
-        return (
-          <CategoryAndProduct
-            key={c?._id + 'CategoryAndProductDisplay'}
-            id={c?._id}
-            name={c?.name}
-          />
-        )
-      })}
-    </section>
+      {/* Category Products */}
+      {categoryData?.map((c) => (
+        <motion.div key={c._id} className="my-12 px-6" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+          <CategoryAndProduct id={c._id} name={c.name} />
+        </motion.div>
+      ))}
+
+      {/* Newsletter Section */}
+      <div className="container mx-auto px-6 my-16 flex flex-col items-center">
+        <div className="max-w-4xl w-full bg-white rounded-xl p-8">
+          <NewsLetter />
+        </div>
+        <div className="w-full border-t-2 border-red-600 mt-6"></div>
+      </div>
+
+      {/* Footer Section */}
+      <Footer />
+    </motion.section>
   )
 }
