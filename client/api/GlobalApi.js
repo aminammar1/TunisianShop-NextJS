@@ -133,6 +133,38 @@ const GlobalApi = {
     url: '/api/cart/delete-cart',
     method: 'delete',
   },
+  CreateAdress: {
+    url: '/api/adress/create-adress',
+    method: 'post',
+  },
+  GetAdress: {
+    url: '/api/adress/get-adress',
+    method: 'get',
+  },
+  UpdateAdress: {
+    url: '/api/adress/update-adress',
+    method: 'put',
+  },
+  DeleteAdress: {
+    url: '/api/adress/delete-adress',
+    method: 'delete',
+  },
+  CashOnDeliveryOrder : {
+    url: '/api/order/cash-on-delivery',
+    method: 'post',
+  },
+  Payment : {
+    url: '/api/order/payment',
+    method: 'post',
+  },
+  OrderDetails : {
+    url: '/api/order/order-details',
+    method: 'get',
+  },
+  WebhookStripe : {
+    url: '/api/order/webhook',
+    method: 'post',
+  },
 }
 
 export default GlobalApi

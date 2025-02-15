@@ -8,6 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
 import { addToCart, clearCart } from '@/store/cartSlice'
 import { pricewithDiscount } from '@/lib/PriceWithDiscount'
+import { handleAddOrder } from '@/store/orderSlice'
+import { handleAddAddress } from '@/store/addressSlice'
 
 export const GlobalContext = createContext(null)
 export const useGlobalContext = () => useContext(GlobalContext)
@@ -92,11 +94,41 @@ const GlobalProvider = ({ children }) => {
     )
   }, [cartItem])
 
+
+
+  const fetchAddress = async () => {
+    try {
+      const response = await Axios({ ...GlobalApi.GetAdress })
+      const { data: responseData } = response
+      if (responseData.success) {
+        dispatch(handleAddAddress(responseData.data))
+      }
+    } catch (error) {
+      //AxiosToastError(error)
+    }
+  }
+
+  const fetchOrder = async () => {
+    try {
+      const response = await Axios({ ...GlobalApi.OrderDetails })
+      const { data: responseData } = response
+      if (responseData.success) {
+        dispatch(handleAddOrder(responseData.data))
+      }
+    } catch (error) {
+      //AxiosToastError(error) 
+    }
+  }
+
+  
+
   useEffect(() => {
     if (!user?._id) {
       dispatch(clearCart())
     } else {
       fetchCartItem()
+      fetchAddress()
+      fetchOrder()
     }
   }, [user])
 
@@ -109,6 +141,8 @@ const GlobalProvider = ({ children }) => {
         totalPrice,
         totalQty,
         notDiscountTotalPrice,
+        fetchAddress,
+        fetchOrder,
       }}
     >
       {children}

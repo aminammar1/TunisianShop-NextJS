@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { IoClose } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
 import { useGlobalContext } from '@/providers/GlobalProvider';
 import { DisplayPrice } from '@/lib/DisplayPrice';
 import { FaCaretRight } from 'react-icons/fa';
@@ -9,12 +10,24 @@ import AddToCartButton from './AddToCartButton';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import { pricewithDiscount } from '@/lib/PriceWithDiscount';
+import toast from 'react-hot-toast';
 
 export default function DisplayCartItem({ close }) {
-  const { notDiscountTotalPrice, totalPrice, totalQty } = useGlobalContext();
-  const cartItem = useSelector((state) => state.cartItem.cart);
+  const { notDiscountTotalPrice, totalPrice, totalQty } = useGlobalContext()
+  const cartItem = useSelector((state) => state.cartItem.cart)
+  const user = useSelector((state) => state.user)
+  const router = useRouter()
 
-  const redirectToCheckoutPage = () => {};
+  const redirectToCheckoutPage = () => {
+    if (user?._id) {
+      router.push('/checkout')
+      if (close) {
+        close()
+      }
+      return 
+    }
+    toast.error('Please login first')
+  }
 
   return (
     <section className='bg-neutral-900 fixed top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50'>
@@ -107,5 +120,5 @@ export default function DisplayCartItem({ close }) {
         )}
       </div>
     </section>
-  );
+  )
 }

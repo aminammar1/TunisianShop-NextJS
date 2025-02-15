@@ -63,11 +63,12 @@ export async function paymentController(req,res){
         const { list_items, totalAmt, addressId,subTotalAmt } = req.body 
 
         const user = await UserModel.findById(userId)
-
+        
+        const exchangeRate = 0.30
         const line_items  = list_items.map(item =>{
             return{
                price_data : {
-                    currency : 'TND',
+                    currency : 'EUR',
                     product_data : {
                         name : item.productId.name,
                         images : item.productId.image,
@@ -75,7 +76,7 @@ export async function paymentController(req,res){
                             productId : item.productId._id
                         }
                     },
-                    unit_amount : pricewithDiscount(item.productId.price,item.productId.discount) * 100   
+                    unit_amount :  Math.round(pricewithDiscount(item.productId.price,item.productId.discount) * exchangeRate * 100 ) 
                },
                adjustable_quantity : {
                     enabled : true,
@@ -95,8 +96,8 @@ export async function paymentController(req,res){
                 addressId : addressId
             },
             line_items : line_items,
-            success_url : `${process.env.FRONTEND_URL}/success`,
-            cancel_url : `${process.env.FRONTEND_URL}/cancel`
+            success_url : `${process.env.FRONTEND_URL}/successOrder?text=Order`,
+            cancel_url : `${process.env.FRONTEND_URL}/`
         }
 
         const session = await Stripe.checkout.sessions.create(params)
