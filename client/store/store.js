@@ -8,28 +8,23 @@ import addressReducer from './addressSlice'
 import orderReducer from './orderSlice'
 
 const persistConfig = {
-  key: 'root',
+  key: 'user',
   storage,
 }
 
 const UserReducer = persistReducer(persistConfig, userReducer)
-const ProductReducer = persistReducer(persistConfig, productReducer)
-const CartReducer = persistReducer(persistConfig, cartReducer)
-const AddressReducer = persistReducer(persistConfig, addressReducer)
-const OrderReducer = persistReducer(persistConfig, orderReducer)
 
 export const store = configureStore({
   reducer: {
     user: UserReducer,
-    product: ProductReducer,
-    cartItem: CartReducer,
-    address: AddressReducer,
-    order: OrderReducer,
+    product: productReducer,
+    cartItem: cartReducer,
+    address: addressReducer,
+    order: orderReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
     }),
 })
-
 export const persistor = persistStore(store)

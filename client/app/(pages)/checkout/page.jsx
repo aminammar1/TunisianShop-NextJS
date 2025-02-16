@@ -27,11 +27,13 @@ export default function page() {
   const [selectAddress, setSelectAddress] = useState(0)
   const cartItemsList = useSelector((state) => state.cartItem.cart)
   const router = useRouter()
-  const [loading, setLoading] = useState(false)
+  const [loadingOnline, setLoadingOnline] = useState(false);
+  const [loadingCash, setLoadingCash] = useState(false);
+
 
   const handleCashOnDelivery = async () => {
     try {
-      setLoading(true)
+      setLoadingCash(true)
       const response = await Axios({
         ...GlobalApi.CashOnDeliveryOrder,
         data: {
@@ -52,13 +54,13 @@ export default function page() {
     } catch (error) {
       AxiosToastError(error)
     } finally {
-      setLoading(false)
+      setLoadingCash(false)
     }
   }
 
   const handleOnlinePayment = async () => {
     try {
-        setLoading(true)
+      setLoadingOnline(true)
         const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_KEY
         const stripe = await loadStripe(stripePublicKey)
 
@@ -82,7 +84,7 @@ export default function page() {
         console.error("Payment error:", error);
         toast.error("Payment failed. Please try again.");
     } finally {
-        setLoading(false)
+      setLoadingOnline(false)
     }
 }
 
@@ -175,8 +177,9 @@ export default function page() {
             <button
               className="py-2 px-4 bg-red-600 hover:bg-red-700 rounded text-white font-semibold"
               onClick={handleOnlinePayment}
+              
             >
-              {loading ? (
+              {loadingOnline ? (
                 <ClipLoader color="#f00" size={20} />
               ) : (
                 'Online Payment'
@@ -186,7 +189,7 @@ export default function page() {
               className="py-2 px-4 border-2 border-red-600 font-semibold text-red-700 hover:bg-red-600 hover:text-white"
               onClick={handleCashOnDelivery}
             >
-              {loading ? (
+              {loadingCash ? (
                 <ClipLoader color="#f00" size={20} />
               ) : (
                 'Cash On Delivery'

@@ -116,7 +116,7 @@ const GlobalProvider = ({ children }) => {
         dispatch(handleAddOrder(responseData.data))
       }
     } catch (error) {
-      //AxiosToastError(error) 
+      console.log('Error fetching orders:', error);
     }
   }
 
