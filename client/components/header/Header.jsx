@@ -7,7 +7,6 @@ import Search from '../search-button/Search'
 import Image from 'next/image'
 import UserMenu from '../user-menu/UserMenu'
 import { useSelector } from 'react-redux'
-import { FaRegCircleUser } from 'react-icons/fa6'
 import { BsCart3 } from 'react-icons/bs'
 import { GoTriangleDown, GoTriangleUp } from 'react-icons/go'
 import DisplayCartItem from '../DisplayCart'
@@ -43,8 +42,8 @@ export default function Header() {
           <Link href="/" className="h-full flex justify-center items-center">
             <Image
               src="/assets/images/logo.png"
-              width={170}
-              height={60}
+              width={300}
+              height={80}
               alt="logo"
               className="hidden lg:block"
               priority
