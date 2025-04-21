@@ -12,6 +12,7 @@ import { motion } from 'framer-motion'
 
 export default function HomePage() {
   const banner = '/assets/images/Banner.png'
+  const mobileBanner = '/assets/images/mobileBanner.png'
   const router = useRouter()
   const categoryData = useSelector((state) => state.product.allCategory)
   const subCategoryData = useSelector((state) => state.product.allSubCategory)
@@ -35,19 +36,31 @@ export default function HomePage() {
 
   return (
     <motion.section className="bg-white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      <div className="container mx-auto mt-8 px-6">
+      <div className="container mx-auto ">
         {/* Banner Section */}
-        <div className="w-full rounded-lg overflow-hidden bg-gray-100 min-h-[200px] flex justify-center items-center">
+        <div className={`w-full h-full min-h-48 bg-blue-100 rounded ${!banner && "animate-pulse my-2" } `}>
+          {/* Desktop Banner */}
           <Image
             src={banner}
             alt="banner"
             width={1466}
             height={310}
-            className="w-full h-auto hidden lg:block rounded-lg"
+            className="w-full h-full hidden lg:block"
+            priority
+          />
+          {/* Mobile Banner */}
+          
+          <div className="relative w-full h-48 lg:hidden">
+          <Image
+            src={mobileBanner}
+            alt="banner"
+            fill
+            className="object-cover"
             priority
           />
         </div>
-      </div>
+          </div>
+        </div>
 
       {/* Categories Section */}
       <div className="container mx-auto px-6 my-12">
