@@ -8,9 +8,13 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import GlobalProvider from '@/providers/GlobalProvider'
 import ProgressBar from '@/components/Progress'
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { useDispatch } from 'react-redux'
-import { setAllCategory, setAllSubCategory, setLoadingCategory } from '@/store/ProductSlice'
+import {
+  setAllCategory,
+  setAllSubCategory,
+  setLoadingCategory,
+} from '@/store/ProductSlice'
 import GlobalApi from '@/api/GlobalApi'
 import Axios from '@/lib/Axios'
 
@@ -21,12 +25,16 @@ function Initializer() {
     try {
       dispatch(setLoadingCategory(true))
       const response = await Axios({
-        ...GlobalApi.GetCategories
+        ...GlobalApi.GetCategories,
       })
       const { data: responseData } = response
 
       if (responseData.success) {
-        dispatch(setAllCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+        dispatch(
+          setAllCategory(
+            responseData.data.sort((a, b) => a.name.localeCompare(b.name))
+          )
+        )
       }
     } catch (error) {
       console.error(error)
@@ -38,12 +46,16 @@ function Initializer() {
   const fetchSubCategory = async () => {
     try {
       const response = await Axios({
-        ...GlobalApi.GetSubCategories
+        ...GlobalApi.GetSubCategories,
       })
       const { data: responseData } = response
 
       if (responseData.success) {
-        dispatch(setAllSubCategory(responseData.data.sort((a, b) => a.name.localeCompare(b.name))))
+        dispatch(
+          setAllSubCategory(
+            responseData.data.sort((a, b) => a.name.localeCompare(b.name))
+          )
+        )
       }
     } catch (error) {
       console.error(error)
@@ -66,15 +78,15 @@ export default function RootLayout({ children }) {
         <meta name="description" content="Description" />
       </head>
       <body>
-        <ProgressBar />
+        <Suspense fallback={null}>
+          <ProgressBar />
+        </Suspense>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <GlobalProvider>
               <Initializer /> {/* Moved useEffect logic here */}
               <Header />
-              <main className='min-h-[78vh]'>
-                {children}
-              </main>
+              <main className="min-h-[78vh]">{children}</main>
               <Toaster />
             </GlobalProvider>
           </PersistGate>
