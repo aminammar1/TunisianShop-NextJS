@@ -9,6 +9,7 @@ import CategoryAndProduct from '@/components/CategoryAndProduct'
 import NewsLetter from '@/components/NewsLetter'
 import Footer from '@/components/footer/Footer'
 import { motion } from 'framer-motion'
+import Loading from '@/components/Loading'
 
 export default function HomePage() {
   const banner = '/assets/images/Banner.png'
@@ -16,8 +17,15 @@ export default function HomePage() {
   const router = useRouter()
   const categoryData = useSelector((state) => state.product.allCategory)
   const subCategoryData = useSelector((state) => state.product.allSubCategory)
+  const loadingSubcategories = useSelector(
+    (state) => state.product.loadingCategory
+  )
 
   const handleRedirectProductListpage = (id, cat) => {
+    if (loadingSubcategories) {
+      return // Prevent navigation while loading
+    }
+
     const subcategory = subCategoryData.find((sub) =>
       sub.category.some((c) => c === id)
     )
@@ -35,10 +43,19 @@ export default function HomePage() {
   }
 
   return (
-    <motion.section className="bg-white" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <motion.section
+      className="bg-white"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="container mx-auto ">
         {/* Banner Section */}
-        <div className={`w-full h-full min-h-48 bg-blue-100 rounded ${!banner && "animate-pulse my-2" } `}>
+        <div
+          className={`w-full h-full min-h-48 bg-blue-100 rounded ${
+            !banner && 'animate-pulse my-2'
+          } `}
+        >
           {/* Desktop Banner */}
           <Image
             src={banner}
@@ -49,53 +66,84 @@ export default function HomePage() {
             priority
           />
           {/* Mobile Banner */}
-          
+
           <div className="relative w-full h-48 lg:hidden">
-          <Image
-            src={mobileBanner}
-            alt="banner"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
+            <Image
+              src={mobileBanner}
+              alt="banner"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
+      </div>
 
       {/* Categories Section */}
       <div className="container mx-auto px-6 my-12">
         <h2 className="text-2xl font-bold mb-8 text-gray-800">Categories</h2>
-        <motion.div 
+        <motion.div
           className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {categoryData.map((cat) => (
-            <div
-              key={cat._id}
-              className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105"
-              onClick={() => handleRedirectProductListpage(cat._id, cat.name)}
-            >
-              <img
-                src={cat.image}
-                alt={cat.name}
-                className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-cover rounded-lg bg-blue-50"
-              />
-              <p className="mt-2 text-xs md:text-sm lg:text-base font-normal text-gray-700">
-                {cat.name}
-              </p>
-            </div>
-          ))}
+          {loadingSubcategories
+            ? // Show loading indicators when subcategories are loading
+              Array(10)
+                .fill(null)
+                .map((_, index) => (
+                  <div
+                    key={`loading-category-${index}`}
+                    className="flex flex-col items-center"
+                  >
+                    <div className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-blue-50 animate-pulse rounded-lg"></div>
+                    <div className="mt-2 h-4 w-16 bg-blue-50 animate-pulse rounded"></div>
+                  </div>
+                ))
+            : categoryData.map((cat) => (
+                <div
+                  key={cat._id}
+                  className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105"
+                  onClick={() =>
+                    handleRedirectProductListpage(cat._id, cat.name)
+                  }
+                >
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-cover rounded-lg bg-blue-50"
+                  />
+                  <p className="mt-2 text-xs md:text-sm lg:text-base font-normal text-gray-700">
+                    {cat.name}
+                  </p>
+                </div>
+              ))}
         </motion.div>
       </div>
 
       {/* Category Products */}
       {categoryData?.map((c) => (
-        <motion.div key={c._id} className="my-12 px-6" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <motion.div
+          key={c._id}
+          className="my-12 px-6"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
           <CategoryAndProduct id={c._id} name={c.name} />
         </motion.div>
       ))}
+
+      {/* Subcategory Loading Indicator */}
+      {loadingSubcategories && (
+        <div className="container mx-auto px-6 my-6 flex justify-center">
+          <div className="flex items-center gap-2 text-gray-600">
+            <Loading />
+            <span>Loading categories data...</span>
+          </div>
+        </div>
+      )}
 
       {/* Newsletter Section */}
       <div className="container mx-auto px-6 my-16 flex flex-col items-center">
