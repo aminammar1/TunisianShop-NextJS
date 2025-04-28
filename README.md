@@ -121,16 +121,6 @@ hanouti-store/
 └── docker-compose.yml       # Docker Compose configuration
 ```
 
-## 📱 Screenshots
-
-<div align="center">
-  <p float="left">
-    <img src="./client/public/assets/images/screenshot.png" width="48%" />
-  </p>
-  <p float="left">
-    <img src="./client/public/assets/images/screenshot2.png" width="48%" />
-  </p>
-</div>
 
 ## 🚀 Getting Started
 
