@@ -125,12 +125,10 @@ hanouti-store/
 
 <div align="center">
   <p float="left">
-    <img src="./client/public/assets/images/screenshot-home.png" width="48%" />
-    <img src="./client/public/assets/images/screenshot-product.png" width="48%" />
+    <img src="./client/public/assets/images/screenshot.png" width="48%" />
   </p>
   <p float="left">
-    <img src="./client/public/assets/images/screenshot-cart.png" width="48%" />
-    <img src="./client/public/assets/images/screenshot-checkout.png" width="48%" />
+    <img src="./client/public/assets/images/screenshot2.png" width="48%" />
   </p>
 </div>
 
@@ -246,7 +244,7 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License 
 
 ---
 
