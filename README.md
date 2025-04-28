@@ -1,7 +1,7 @@
 # 🛒 Hanouti Store | E-Commerce Platform
 
 <div align="center">
-  <img src="./client/public/assets/images/readme-banner.png" alt="Hanouti Store Banner" width="800px" style="border-radius: 10px; margin-bottom: 20px;" />
+  <img src="./client/public/assets/images/Banner.png" alt="Hanouti Store Banner" width="800px" style="border-radius: 10px; margin-bottom: 20px;" />
   
   <p align="center">
     <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
