@@ -8,6 +8,7 @@ import Image from 'next/image'
 import CategoryAndProduct from '@/components/CategoryAndProduct'
 import NewsLetter from '@/components/NewsLetter'
 import Footer from '@/components/footer/Footer'
+import Chatbot from '@/components/Chatbot'
 import { motion } from 'framer-motion'
 import Loading from '@/components/Loading'
 
@@ -155,6 +156,9 @@ export default function HomePage() {
 
       {/* Footer Section */}
       <Footer />
+
+      {/* Chatbot Component */}
+      <Chatbot />
     </motion.section>
   )
 }
