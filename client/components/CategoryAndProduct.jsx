@@ -80,55 +80,87 @@ export default function CategoryAndProduct({ id, name }) {
   const redirectURL = handleRedirectProductListpage()
 
   return (
-    <div>
-      <div className="container mx-auto p-4 flex items-center justify-between gap-4">
-        <h3 className="font-semibold text-lg md:text-xl">{name}</h3>
-        {loadingSubcategories ? (
-          <div className="flex items-center gap-2">
-            <Loading />
-            <span className="text-sm text-gray-500">Loading...</span>
+    <div className="relative">
+      <div className="container mx-auto p-6 mb-10">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div className="flex flex-col items-center">
+              <div className="w-2 h-2 bg-red-600 rounded-full mb-1" />
+              <div className="w-1 h-8 bg-red-600" />
+              <div className="w-2 h-2 bg-red-600 rounded-full mt-1" />
+            </div>
+            <div>
+              <h3 className="font-bold text-2xl md:text-3xl text-gray-900 tracking-wide">
+                {name}
+              </h3>
+              <div className="w-16 h-0.5 bg-red-600 mt-1" />
+            </div>
           </div>
-        ) : (
-          <Link href={redirectURL} className="text-red-600 hover:text-red-400">
-            See All
-          </Link>
-        )}
+
+          {loadingSubcategories ? (
+            <div className="flex items-center gap-3 bg-red-50 rounded-full px-6 py-3 border border-red-200">
+              <Loading />
+              <span className="text-red-700 font-semibold text-sm">
+                Loading...
+              </span>
+            </div>
+          ) : (
+            <Link
+              href={redirectURL}
+              className="group relative flex items-center gap-3 bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <span className="relative z-10">See All</span>
+              <svg
+                className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </Link>
+          )}
+        </div>
       </div>
 
-      <div className="relative flex items-center ">
+      <div className="relative">
         <div
-          className=" flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth"
+          className="flex gap-6 md:gap-8 container mx-auto px-6 overflow-x-auto scrollbar-none scroll-smooth pb-6"
           ref={containerRef}
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {loading &&
-            loadingCardNumber.map((_, index) => {
-              return (
-                <CardLoading key={'CategoryWithProductDisplay123' + index} />
-              )
-            })}
+            loadingCardNumber.map((_, index) => (
+              <CardLoading key={'CategoryWithProductDisplay123' + index} />
+            ))}
 
-          {data.map((p, index) => {
-            return (
-              <CardProduct
-                data={p}
-                key={p._id + 'CategoryWithProductDisplay' + index}
-              />
-            )
-          })}
+          {data.map((p, index) => (
+            <CardProduct
+              data={p}
+              key={p._id + 'CategoryWithProductDisplay' + index}
+            />
+          ))}
         </div>
-        <div className="w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between">
+
+        <div className="absolute inset-y-0 left-0 right-0 container mx-auto px-6 hidden lg:flex justify-between items-center pointer-events-none">
           <button
             onClick={handleScrollLeft}
-            className="z-10 relative bg-white hover:bg-gray-100 shadow-lg text-lg p-2 rounded-full"
+            className="pointer-events-auto z-10 bg-white hover:bg-red-50 shadow-2xl border-2 border-red-100 hover:border-red-300 text-red-600 hover:text-red-700 p-4 rounded-full transition-all duration-300 hover:scale-110 transform"
           >
-            <FaAngleLeft />
+            <FaAngleLeft className="text-xl" />
           </button>
 
           <button
             onClick={handleScrollRight}
-            className="z-10 relative  bg-white hover:bg-gray-100 shadow-lg p-2 text-lg rounded-full"
+            className="pointer-events-auto z-10 bg-white hover:bg-red-50 shadow-2xl border-2 border-red-100 hover:border-red-300 text-red-600 hover:text-red-700 p-4 rounded-full transition-all duration-300 hover:scale-110 transform"
           >
-            <FaAngleRight />
+            <FaAngleRight className="text-xl" />
           </button>
         </div>
       </div>

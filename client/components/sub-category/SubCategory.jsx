@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import UploadSubCategory from './UploadSubCategory'
 import EditSubCategory from './EditSubCategory'
 import Axios from '@/lib/Axios'
@@ -12,11 +13,10 @@ import { MdDelete } from 'react-icons/md'
 import { HiPencil } from 'react-icons/hi'
 import CofirmBox from '../ConfirmeBox'
 import toast from 'react-hot-toast'
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/react-table'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { setAllSubCategory } from '@/store/ProductSlice'
-
 
 export default function SubCategory() {
   const dispatch = useDispatch()
@@ -36,7 +36,6 @@ export default function SubCategory() {
 
   const fetchSubCategory = async () => {
     try {
-      
       const response = await Axios({
         ...GlobalApi.GetSubCategories,
       })
@@ -44,13 +43,12 @@ export default function SubCategory() {
 
       if (responseData.success) {
         setData(responseData.data)
-        dispatch (setAllSubCategory(responseData.data))
-        
+        dispatch(setAllSubCategory(responseData.data))
       }
     } catch (error) {
       console.log(error)
     }
-    }
+  }
 
   useEffect(() => {
     fetchSubCategory()
@@ -66,14 +64,17 @@ export default function SubCategory() {
         console.log('row')
         return (
           <div className="flex justify-center items-center">
-            <img
-              src={row.original.image}
-              alt={row.original.name}
-              className="w-8 h-8 cursor-pointer"
-              onClick={() => {
-                setImageURL(row.original.image)
-              }}
-            />
+            <div className="w-8 h-8 relative">
+              <Image
+                src={row.original.image}
+                alt={row.original.name}
+                fill
+                className="cursor-pointer object-cover"
+                onClick={() => {
+                  setImageURL(row.original.image)
+                }}
+              />
+            </div>
           </div>
         )
       },
@@ -81,19 +82,19 @@ export default function SubCategory() {
     columnHelper.accessor('category', {
       header: 'Category',
       cell: ({ row }) => {
-        const categories = row.original.category || []; // Fallback to an empty array
+        const categories = row.original.category || [] // Fallback to an empty array
         return (
           <>
             {categories.map((categoryId, index) => {
-              const category = allCategory.find((cat) => cat._id === categoryId);
+              const category = allCategory.find((cat) => cat._id === categoryId)
               return (
                 <p key={categoryId + 'table'} className="px-1 inline-block">
-                  {category ? category.name : "Unknown Category"}
+                  {category ? category.name : 'Unknown Category'}
                 </p>
-              );
+              )
             })}
           </>
-        );
+        )
       },
     }),
     columnHelper.accessor('_id', {

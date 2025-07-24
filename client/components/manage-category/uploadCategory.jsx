@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { IoClose } from 'react-icons/io5'
 import UploadImage from '@/lib/UploadImage'
 import toast from 'react-hot-toast'
@@ -34,7 +35,7 @@ export default function UploadCategory({ close, fetchData }) {
     setUploading(true)
     const response = await UploadImage(file)
     const { data: ImageResponse } = response
-    
+
     setUploading(false)
 
     setData((preve) => {
@@ -93,19 +94,19 @@ export default function UploadCategory({ close, fetchData }) {
           <div className="grid gap-1">
             <p>Image</p>
             <div className="flex gap-4 flex-col lg:flex-row items-center">
-              <div className="border bg-gray-100 h-36 w-full lg:w-36 flex items-center justify-center rounded">
+              <div className="border bg-gray-100 h-36 w-full lg:w-36 flex items-center justify-center rounded relative">
                 {data.image ? (
-                  <img
+                  <Image
                     alt="category"
                     src={data.image}
-                    className="w-full h-full object-scale-down"
+                    fill
+                    className="object-scale-down"
                   />
                 ) : (
                   <p className="text-sm text-neutral-500">No Image</p>
                 )}
               </div>
               <label htmlFor="uploadCategoryImage">
-              
                 <div
                   className={`
                             ${
@@ -142,7 +143,7 @@ export default function UploadCategory({ close, fetchData }) {
                     text-white
                     `}
           >
-            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Add Category' }
+            {loading ? <ClipLoader size={24} color={'#fff'} /> : 'Add Category'}
           </button>
         </form>
       </div>

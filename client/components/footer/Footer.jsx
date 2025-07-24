@@ -90,7 +90,7 @@ export default function Footer() {
           <a href="/privacy-policy" className="hover:text-red-600">PRIVACY POLICY</a>
           <a href="/disclaimer" className="hover:text-red-600">DISCLAIMER</a>
         </nav>
-        <p className="mt-4 md:mt-0">&copy; 2015 - Mohamed-amine-ammar</p>
+        <p className="mt-4 md:mt-0">&copy; 2025 - Mohamed-amine-ammar</p>
       </div>
     </footer>
   )

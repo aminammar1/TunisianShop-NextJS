@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import Image from 'next/image'
 import { IoClose } from 'react-icons/io5'
 import { useRouter } from 'next/navigation'
 import { useGlobalContext } from '@/providers/GlobalProvider'
@@ -52,11 +53,12 @@ export default function DisplayCartItem({ close }) {
                     key={item?._id + 'cartItemDisplay'}
                     className="flex w-full gap-4"
                   >
-                    <div className="w-16 h-16 min-h-16 min-w-16 bg-gray-200 border rounded">
-                      <img
+                    <div className="w-16 h-16 min-h-16 min-w-16 bg-gray-200 border rounded relative">
+                      <Image
                         src={item?.productId?.image[0]}
                         alt={item?.productId?.name}
-                        className="object-scale-down w-full h-full"
+                        fill
+                        className="object-scale-down"
                       />
                     </div>
                     <div className="w-full max-w-sm text-xs">
@@ -108,10 +110,12 @@ export default function DisplayCartItem({ close }) {
             </>
           ) : (
             <div className="bg-white flex flex-col justify-center items-center">
-              <img
+              <Image
                 src="/assets/images/empty-card.png"
                 alt="Empty Cart"
-                className="w-full h-full object-scale-down"
+                width={200}
+                height={200}
+                className="object-scale-down"
               />
               <Link
                 onClick={close}

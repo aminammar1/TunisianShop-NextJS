@@ -1,0 +1,77 @@
+name: Documentation Issue
+description: Report issues with documentation or suggest improvements
+title: '[DOCS] '
+labels: ['documentation', 'needs-review']
+assignees: ['aminammar1']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation!
+
+  - type: dropdown
+    id: doc-type
+    attributes:
+      label: Documentation Type
+      description: What type of documentation issue is this?
+      options:
+        - Missing documentation
+        - Incorrect/outdated information
+        - Unclear instructions
+        - Broken links
+        - API documentation
+        - Setup/installation guide
+        - User guide
+        - Developer guide
+        - Code comments
+        - README improvements
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-location
+    attributes:
+      label: Documentation Location
+      description: Where is the documentation issue located?
+      placeholder: |
+        - File path: 
+        - URL: 
+        - Section:
+    validations:
+      required: true
+
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Issue Description
+      description: Describe the documentation issue clearly
+      placeholder: What's wrong with the current documentation?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested-improvement
+    attributes:
+      label: Suggested Improvement
+      description: How would you improve this documentation?
+      placeholder: What changes would make this better?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target-audience
+    attributes:
+      label: Target Audience
+      description: Who is the primary audience for this documentation?
+      multiple: true
+      options:
+        - End Users
+        - Developers
+        - System Administrators
+        - API Consumers
+        - Contributors
+        - All Users
+    validations:
+      required: true

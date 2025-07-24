@@ -73,10 +73,9 @@ export default function AddToCartButton({ data }) {
   }
 
   const decreaseQte = async (e) => {
-    
     e.preventDefault()
     e.stopPropagation()
-    
+
     if (quantity === 1) {
       deleteCartItem(cartItemDetails?._id)
     } else {
@@ -90,29 +89,38 @@ export default function AddToCartButton({ data }) {
   return (
     <div className="w-full max-w-[150px]">
       {isAvailableCart ? (
-        <div className="flex w-full h-full">
+        <div className="flex items-center bg-red-50 rounded-full border-2 border-red-100 overflow-hidden shadow-lg">
           <button
             onClick={decreaseQte}
-            className="bg-red-500 hover:bg-red-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center"
+            className="bg-red-600 hover:bg-red-700 text-white p-2.5 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
           >
-            <FaMinus />
+            <FaMinus className="text-xs" />
           </button>
-          <p className="flex-1 w-full font-semibold px-1 flex items-center justify-center">
+          <div className="flex-1 px-4 py-2.5 font-bold text-center text-red-700 bg-white min-w-10 border-x border-red-100">
             {quantity}
-          </p>
+          </div>
           <button
             onClick={increaseQte}
-            className="bg-red-500 hover:bg-red-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center"
+            className="bg-red-600 hover:bg-red-700 text-white p-2.5 flex items-center justify-center transition-all duration-200 hover:scale-105 active:scale-95"
           >
-            <FaPlus />
+            <FaPlus className="text-xs" />
           </button>
         </div>
       ) : (
         <button
           onClick={handleADDTocart}
-          className="bg-red-500 hover:bg-red-700 text-white px-2 lg:px-4 py-1 rounded"
+          disabled={loading}
+          className="relative w-full bg-red-600 hover:bg-red-700 disabled:bg-gray-400 text-white px-5 py-2.5 rounded-full font-bold transition-all duration-300 hover:scale-105 hover:shadow-lg transform active:scale-95 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none overflow-hidden group"
         >
-          {loading ? <Loading /> : 'Add'}
+          <div className="absolute inset-0 bg-gradient-to-r from-red-700 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          {loading ? (
+            <div className="relative z-10 flex items-center justify-center gap-2">
+              <Loading />
+              <span className="text-xs font-semibold">Adding...</span>
+            </div>
+          ) : (
+            <span className="relative z-10 text-sm font-bold">Add to Cart</span>
+          )}
         </button>
       )}
     </div>

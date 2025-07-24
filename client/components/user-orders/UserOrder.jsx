@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useSelector } from 'react-redux'
 import NoData from '../NoData'
 
@@ -34,11 +35,14 @@ export default function UserOrder() {
 
             {/* Product Details */}
             <div className="flex items-center space-x-6">
-              <img
-                src={order.product_details.image[0]}
-                alt={order.product_details.name}
-                className="w-20 h-20 object-cover rounded-lg border"
-              />
+              <div className="w-20 h-20 relative">
+                <Image
+                  src={order.product_details.image[0]}
+                  alt={order.product_details.name}
+                  fill
+                  className="object-cover rounded-lg border"
+                />
+              </div>
               <div className="flex-1">
                 <p className="text-lg font-medium text-gray-900">
                   {order.product_details.name}
@@ -58,9 +62,7 @@ export default function UserOrder() {
               </p>
               <p>
                 <span className="font-semibold">Total Amount:</span>
-                {`   ${(order.totalAmt * 3.3).toFixed(
-                  3
-                )} TND`}
+                {`   ${(order.totalAmt * 3.3).toFixed(3)} TND`}
               </p>
             </div>
           </div>

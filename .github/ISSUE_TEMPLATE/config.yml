@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 General Discussion
+    url: https://github.com/aminammar1/TunisiaShop-NextJS/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: 🔒 Security Issue
+    url: mailto:security@tunisiashop.com
+    about: Please report security vulnerabilities privately via email
+  - name: 📖 Documentation
+    url: https://github.com/aminammar1/TunisiaShop-NextJS/wiki
+    about: Check our documentation and wiki pages

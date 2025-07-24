@@ -1,0 +1,158 @@
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: '[FEATURE] '
+labels: ['enhancement', 'needs-discussion']
+assignees: ['aminammar1']
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide as much detail as possible.
+
+  - type: checkboxes
+    id: preliminary-checks
+    attributes:
+      label: Preliminary Checks
+      description: Please confirm you have done the following
+      options:
+        - label: I have searched existing issues to ensure this feature hasn't been requested
+          required: true
+        - label: I have checked the documentation and roadmap
+          required: true
+
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Feature Description
+      description: A clear and concise description of the feature you'd like to see
+      placeholder: Describe the feature here...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve? What's the current limitation?
+      placeholder: Describe the problem or limitation...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed Solution
+      description: How would you like this feature to work?
+      placeholder: Describe your proposed solution...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: Describe any alternatives you've considered...
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component/Area
+      description: Which part of the application would this feature affect?
+      options:
+        - Frontend (Next.js)
+        - Backend (Express/Node.js)
+        - Database (MongoDB)
+        - Authentication
+        - Payment System
+        - Cart/Shopping
+        - Product Management
+        - Order Management
+        - User Management
+        - Admin Panel
+        - API
+        - Mobile Responsiveness
+        - Performance
+        - Security
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would improve user experience
+        - High - Important for business goals
+        - Critical - Blocking current workflows
+    validations:
+      required: true
+
+  - type: dropdown
+    id: user-type
+    attributes:
+      label: User Type
+      description: Who would benefit from this feature?
+      multiple: true
+      options:
+        - End Users (Customers)
+        - Admin Users
+        - Developers
+        - All Users
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Provide specific use cases or user stories
+      placeholder: |
+        As a [user type], I want [goal] so that [benefit].
+        Example scenarios:
+        1. ...
+        2. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: mockups
+    attributes:
+      label: Mockups/Wireframes
+      description: If applicable, add mockups, wireframes, or visual examples
+      placeholder: Drag and drop images or describe the visual design...
+
+  - type: textarea
+    id: technical-considerations
+    attributes:
+      label: Technical Considerations
+      description: Any technical aspects, dependencies, or implementation ideas?
+      placeholder: |
+        - Third-party integrations needed
+        - Database changes required
+        - API changes needed
+        - Performance considerations
+        - Security implications
+
+  - type: checkboxes
+    id: implementation-willingness
+    attributes:
+      label: Implementation
+      description: Would you be willing to help implement this feature?
+      options:
+        - label: I'm willing to work on this feature
+        - label: I can help with testing
+        - label: I can help with documentation
+        - label: I can provide feedback during development
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Any other information that would be helpful
+      placeholder: Any additional context, links, or examples...

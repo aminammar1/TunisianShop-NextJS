@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import EditProduct from './EditProduct'
 //import CofirmBox from '../ConfirmeBox'
 import { IoClose } from 'react-icons/io5'
@@ -39,11 +40,12 @@ export default function ProductCard({ data, fetchProductData }) {
 
   return (
     <div className="w-36 p-4 bg-white rounded">
-      <div className="w-full h-32 flex items-center justify-center overflow-hidden">
-        <img
+      <div className="w-full h-32 flex items-center justify-center overflow-hidden relative">
+        <Image
           src={data?.image[0]}
           alt={data?.name}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
       <p className="text-ellipsis line-clamp-2 font-medium">{data?.name}</p>

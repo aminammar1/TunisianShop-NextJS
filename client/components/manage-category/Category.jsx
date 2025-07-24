@@ -1,5 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 import UploadCategory from './uploadCategory'
 import Loading from '../Loading'
 import NoData from '../NoData'
@@ -87,11 +88,12 @@ export default function Category() {
               className="w-32 h-56 flex flex-col rounded shadow-md overflow-hidden"
             >
               {/* Image container with fixed height */}
-              <div className="h-40 w-full">
-                <img
+              <div className="h-40 w-full relative">
+                <Image
                   alt={category.name}
                   src={category.image}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               </div>
 

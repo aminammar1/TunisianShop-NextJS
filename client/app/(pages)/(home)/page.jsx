@@ -81,68 +81,114 @@ export default function HomePage() {
       </div>
 
       {/* Categories Section */}
-      <div className="container mx-auto px-6 my-12">
-        <h2 className="text-2xl font-bold mb-8 text-gray-800">Categories</h2>
+      <div className="container mx-auto px-6 my-16">
+        <div className="flex items-center justify-center mb-12">
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="w-12 h-0.5 bg-red-600"></div>
+              <div className="w-3 h-3 bg-red-600 rotate-45"></div>
+              <div className="w-12 h-0.5 bg-red-600"></div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 tracking-wide">
+              Shop by Category
+            </h2>
+            <p className="text-lg text-red-600 font-medium mt-2">
+              Discover Our Products
+            </p>
+          </div>
+        </div>
+
         <motion.div
-          className="grid grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2"
-          initial={{ opacity: 0, y: 20 }}
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8"
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6, staggerChildren: 0.1 }}
         >
           {loadingSubcategories
-            ? // Show loading indicators when subcategories are loading
-              Array(10)
+            ? Array(6)
                 .fill(null)
                 .map((_, index) => (
-                  <div
+                  <motion.div
                     key={`loading-category-${index}`}
-                    className="flex flex-col items-center"
+                    className="group flex flex-col items-center"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: index * 0.15 }}
                   >
-                    <div className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 bg-blue-50 animate-pulse rounded-lg"></div>
-                    <div className="mt-2 h-4 w-16 bg-blue-50 animate-pulse rounded"></div>
-                  </div>
+                    <div className="relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32">
+                      <div className="absolute inset-0 bg-red-50 rounded-2xl animate-pulse" />
+                      <div className="absolute inset-1 bg-white rounded-xl animate-pulse opacity-70" />
+                      <div className="absolute top-1 right-1 w-3 h-3 bg-red-200 rounded-full animate-pulse" />
+                    </div>
+                    <div className="mt-4 h-4 w-20 bg-red-100 animate-pulse rounded-full" />
+                  </motion.div>
                 ))
-            : categoryData.map((cat) => (
-                <div
+            : categoryData.map((cat, index) => (
+                <motion.div
                   key={cat._id}
-                  className="flex flex-col items-center cursor-pointer transition-transform duration-300 hover:scale-105"
+                  className="group flex flex-col items-center cursor-pointer"
                   onClick={() =>
                     handleRedirectProductListpage(cat._id, cat.name)
                   }
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.15 }}
+                  whileHover={{ scale: 1.05, y: -4 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    className="w-20 h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 object-cover rounded-lg bg-blue-50"
-                  />
-                  <p className="mt-2 text-xs md:text-sm lg:text-base font-normal text-gray-700">
+                  <div className="relative w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-50 to-red-100 rounded-2xl group-hover:from-red-100 group-hover:to-red-200 transition-all duration-300 shadow-md group-hover:shadow-xl" />
+                    <div className="absolute inset-1.5 rounded-xl overflow-hidden bg-white shadow-inner">
+                      <Image
+                        src={cat.image}
+                        alt={cat.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="absolute top-1 right-1 w-3 h-3 bg-red-600 rounded-full opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                  <p className="mt-4 text-sm md:text-base font-semibold text-gray-800 group-hover:text-red-600 transition-colors duration-300 text-center max-w-24 md:max-w-28 lg:max-w-32 leading-tight">
                     {cat.name}
                   </p>
-                </div>
+                  <div className="w-8 h-0.5 bg-red-600 mt-2 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+                </motion.div>
               ))}
         </motion.div>
       </div>
 
       {/* Category Products */}
-      {categoryData?.map((c) => (
-        <motion.div
-          key={c._id}
-          className="my-12 px-6"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <CategoryAndProduct id={c._id} name={c.name} />
-        </motion.div>
-      ))}
+      <div className="bg-gradient-to-b from-red-50/30 via-white to-red-50/30 py-20">
+        {categoryData?.map((c, index) => (
+          <motion.div
+            key={c._id}
+            className="my-20 px-6"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: index * 0.1 }}
+          >
+            <CategoryAndProduct id={c._id} name={c.name} />
+          </motion.div>
+        ))}
+      </div>
 
       {/* Subcategory Loading Indicator */}
       {loadingSubcategories && (
-        <div className="container mx-auto px-6 my-6 flex justify-center">
-          <div className="flex items-center gap-2 text-gray-600">
-            <Loading />
-            <span>Loading categories data...</span>
-          </div>
+        <div className="container mx-auto px-6 my-8 flex justify-center">
+          <motion.div
+            className="flex items-center gap-4 bg-white rounded-full px-8 py-4 shadow-xl border border-red-100"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="relative">
+              <Loading />
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 rounded-full animate-ping" />
+            </div>
+            <span className="text-gray-800 font-semibold">
+              Loading categories...
+            </span>
+          </motion.div>
         </div>
       )}
 
