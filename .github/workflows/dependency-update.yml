@@ -2,7 +2,6 @@ name: Monthly Dependency Update
 
 on:
   schedule:
-    # Run on the 1st day of every month at 9:00 AM UTC
     - cron: '0 9 1 * *'
   workflow_dispatch:
 
@@ -35,11 +34,13 @@ jobs:
       - name: Update dependencies
         working-directory: ./server
         run: |
-          # Update all dependencies to latest compatible versions
-          npm update
+          npm install -g npm-check-updates
+          npx ncu -u --target minor
+          npm install
 
-          # Check for security vulnerabilities
-          npm audit fix --force || true
+      - name: Check for security vulnerabilities
+        working-directory: ./server
+        run: npm audit fix --force || true
 
       - name: Run tests after update
         working-directory: ./server
@@ -53,7 +54,6 @@ jobs:
       - name: Check for breaking changes
         working-directory: ./server
         run: |
-          # Try to start the application
           timeout 30s npm start || echo "Application may have breaking changes"
 
       - name: Create Pull Request for Backend
@@ -112,11 +112,13 @@ jobs:
       - name: Update dependencies
         working-directory: ./client
         run: |
-          # Update all dependencies to latest compatible versions
-          npm update
+          npm install -g npm-check-updates
+          npx ncu -u --target minor
+          npm install
 
-          # Check for security vulnerabilities
-          npm audit fix --force || true
+      - name: Check for security vulnerabilities
+        working-directory: ./client
+        run: npm audit fix --force || true
 
       - name: Build application after update
         working-directory: ./client
