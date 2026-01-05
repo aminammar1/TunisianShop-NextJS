@@ -9,25 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@langchain/community": "^0.3.58",
-    "@langchain/core": "^0.3.79",
-    "@langchain/openai": "^0.6.16",
-    "@reduxjs/toolkit": "^2.11.0",
+    "@langchain/community": "^0.3.59",
+    "@langchain/core": "^0.3.80",
+    "@langchain/openai": "^0.6.17",
+    "@reduxjs/toolkit": "^2.11.2",
     "@stripe/stripe-js": "^5.10.0",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.13.2",
     "firebase": "^11.10.0",
-    "framer-motion": "^12.23.24",
-    "langchain": "^0.3.36",
-    "lucide-react": "^0.555.0",
-    "next": "^15.5.6",
+    "framer-motion": "^12.23.26",
+    "langchain": "^0.3.37",
+    "lucide-react": "^0.562.0",
+    "next": "^15.5.9",
     "nprogress": "^0.2.0",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-hook-form": "^7.67.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-hook-form": "^7.69.0",
     "react-hot-toast": "^2.6.0",
     "react-icons": "^5.5.0",
-    "react-infinite-scroll-component": "^6.1.0",
+    "react-infinite-scroll-component": "^6.1.1",
     "react-phone-input-2": "^2.15.1",
     "react-redux": "^9.2.0",
     "react-spinners": "^0.17.0",
@@ -36,6 +36,6 @@
   },
   "devDependencies": {
     "postcss": "^8",
-    "tailwindcss": "^3.4.18"
+    "tailwindcss": "^3.4.19"
   }
 }
